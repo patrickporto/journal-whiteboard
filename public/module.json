@@ -6,8 +6,8 @@
         "verified": "10",
         "maximum": "11"
     },
-    "title": "journal-whiteboard",
-    "description": "A Foundry VTT module template",
+    "title": "Journal Whiteboard",
+    "description": "A Whiteboard module for Foundry VTT",
     "languages": [
         {
             "lang": "en",
