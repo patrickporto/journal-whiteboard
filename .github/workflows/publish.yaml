@@ -4,7 +4,7 @@ on:
         types: [published]
 
 env:
-    PKG_NAME: fvtt-module-template
+    PKG_NAME: journal-whiteboard
     MANIFEST_FILE_PATH: dist/module.json
     RELEASE_NAME: ${{ github.event.release.tag_name }}
 

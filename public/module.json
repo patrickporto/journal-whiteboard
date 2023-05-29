@@ -1,12 +1,12 @@
 {
-    "id": "fvtt-module-template",
+    "id": "journal-whiteboard",
     "version": "10.0.0",
     "compatibility": {
         "minimum": "10",
         "verified": "10",
         "maximum": "10"
     },
-    "title": "fvtt-module-template",
+    "title": "journal-whiteboard",
     "description": "A Foundry VTT module template",
     "languages": [
         {
@@ -16,6 +16,6 @@
         }
     ],
     "esmodules": [
-        "fvtt-module-template.js"
+        "journal-whiteboard.js"
     ]
 }

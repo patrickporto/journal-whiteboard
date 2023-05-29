@@ -1,5 +1,5 @@
 {
-    "name": "fvtt-module-template",
+    "name": "journal-whiteboard",
     "version": "1.0.0",
     "private": true,
     "type": "module",
@@ -9,8 +9,8 @@
         "dev": "vite dev",
         "postversion": "npm run postversion:update-module-version && npm run postversion:update-module-manifest && npm run postversion:update-module-download",
         "postversion:update-module-version": "jq '.version = \"'${npm_package_version}'\"' ./public/module.json > ./public/module.json.tmp && mv ./public/module.json.tmp ./public/module.json",
-        "postversion:update-module-manifest": "jq '.manifest = \"https://github.com/patrickporto/fvtt-module-template/releases/download/'${npm_package_version}'/module.json\"' ./public/module.json > ./public/module.json.tmp && mv ./public/module.json.tmp ./public/module.json",
-        "postversion:update-module-download": "jq '.download = \"https://github.com/patrickporto/fvtt-module-template/releases/download/'${npm_package_version}'/fvtt-module-template.zip\"' ./public/module.json > ./public/module.json.tmp && mv ./public/module.json.tmp ./public/module.json",
+        "postversion:update-module-manifest": "jq '.manifest = \"https://github.com/patrickporto/journal-whiteboard/releases/download/'${npm_package_version}'/module.json\"' ./public/module.json > ./public/module.json.tmp && mv ./public/module.json.tmp ./public/module.json",
+        "postversion:update-module-download": "jq '.download = \"https://github.com/patrickporto/journal-whiteboard/releases/download/'${npm_package_version}'/journal-whiteboard.zip\"' ./public/module.json > ./public/module.json.tmp && mv ./public/module.json.tmp ./public/module.json",
         "format": "prettier --write \"src/**/*.{ts,js,json,css,md}\"",
         "format:check": "prettier --check \"src/**/*.{ts,js,json,css,md}\"",
         "lint": "eslint -c .eslintrc.cjs .",
