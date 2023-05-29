@@ -1,0 +1,21 @@
+{
+    "id": "fvtt-module-template",
+    "version": "10.0.0",
+    "compatibility": {
+        "minimum": "10",
+        "verified": "10",
+        "maximum": "10"
+    },
+    "title": "fvtt-module-template",
+    "description": "A Foundry VTT module template",
+    "languages": [
+        {
+            "lang": "en",
+            "name": "English",
+            "path": "lang/en.json"
+        }
+    ],
+    "esmodules": [
+        "fvtt-module-template.js"
+    ]
+}

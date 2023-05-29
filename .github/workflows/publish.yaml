@@ -1,0 +1,61 @@
+name: Publish Package
+on:
+    release:
+        types: [published]
+
+env:
+    PKG_NAME: fvtt-module-template
+    MANIFEST_FILE_PATH: dist/module.json
+    RELEASE_NAME: ${{ github.event.release.tag_name }}
+
+jobs:
+    run-action:
+        name: Run action
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+            discussions: write
+
+        steps:
+            - uses: actions/checkout@v2
+
+            - name: Use Node.js 16.x
+              uses: actions/setup-node@v2
+              with:
+                  node-version: 16.x
+                  cache: "npm"
+                  cache-dependency-path: package-lock.json
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Bump version
+              run: npm version ${{ github.event.release.tag_name }} --no-git-tag-version
+
+            - name: Build
+              run: npm run build
+
+            - name: Zip Files
+              working-directory: ./dist
+              run: zip -r ./${{env.PKG_NAME}}.zip ./*
+            - name: upload binaries to release
+              uses: softprops/action-gh-release@v1
+              if: ${{startsWith(github.ref, 'refs/tags/') }}
+              with:
+                  files: |
+                      ./dist/${{env.PKG_NAME}}.zip
+                      ./dist/module.json
+            - name: Commit and push
+              run: |
+                  git config user.name github-actions
+                  git config user.email github-actions@github.com
+                  git commit -am "chore(release): ${{ github.event.release.tag_name }}"
+                  git push origin HEAD:main
+
+            - name: Upload to FoundryVTT
+              run: npx @ghost-fvtt/foundry-publish
+              env:
+                  FVTT_USERNAME: ${{ secrets.FOUNDRY_ADMIN_USERNAME }}
+                  FVTT_PASSWORD: ${{ secrets.FOUNDRY_ADMIN_PASSWORD }}
+                  FVTT_PACKAGE_ID: ${{ secrets.FOUNDRY_ADMIN_MODULE_ID }}
+                  FVTT_MANIFEST_PATH: ${{ env.MANIFEST_FILE_PATH }}
