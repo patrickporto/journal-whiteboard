@@ -4,7 +4,7 @@
     "compatibility": {
         "minimum": "10",
         "verified": "10",
-        "maximum": "10"
+        "maximum": "11"
     },
     "title": "journal-whiteboard",
     "description": "A Foundry VTT module template",
