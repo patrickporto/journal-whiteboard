@@ -13,6 +13,7 @@ export default {
                 JournalWhiteboardPageSheet,
                 {
                     types: ['journal-whiteboard.whiteboard'],
+                    label: game.i18n.localize('TYPES.JournalEntryPage.journal-whiteboard.whiteboard'),
                     makeDefault: true,
                 },
             );
