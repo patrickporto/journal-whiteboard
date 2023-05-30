@@ -3,8 +3,8 @@ import { CANNONICAL_NAME } from '../constants';
 export class DebugSettings {
     registerSettings() {
         (game as Game).settings.register(CANNONICAL_NAME, 'debug', {
-            name: (game as Game).i18n.localize('MODULE.Debug'),
-            hint: (game as Game).i18n.localize('MODULE.DebugHint'),
+            name: (game as Game).i18n.localize('JW.Debug'),
+            hint: (game as Game).i18n.localize('JW.DebugHint'),
             scope: 'world',
             config: true,
             default: false,

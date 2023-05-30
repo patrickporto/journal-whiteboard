@@ -9,8 +9,8 @@
         "strict": true,
         "skipLibCheck": true,
         "strictNullChecks": true,
-        "types": [
-            "@league-of-foundry-developers/foundry-vtt-types"
-        ]
+        "paths": {
+            "*": [ "./src/types/*"]
+        }
     }
 }

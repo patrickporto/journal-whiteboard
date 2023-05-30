@@ -1,4 +1,5 @@
 import debugModule from './debug/debug.module';
+import whiteboard from './whiteboard/whiteboard.module';
 
 type Module = {
     hooks: {
@@ -7,7 +8,7 @@ type Module = {
     };
 };
 
-const modules: Module[] = [debugModule];
+const modules: Module[] = [debugModule, whiteboard];
 
 Hooks.on('init', async () => {
     for (const module of modules) {

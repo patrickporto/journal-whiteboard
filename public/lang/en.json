@@ -1,4 +1,5 @@
 {
-    "MODULE.Debug": "Debug",
-    "MODULE.DebugHint": "Enable debug logging"
+    "JW.Debug": "Debug",
+    "JW.DebugHint": "Enable debug logging",
+    "TYPES.JournalEntryPage.journal-whiteboard.whiteboard": "Whiteboard"
 }
