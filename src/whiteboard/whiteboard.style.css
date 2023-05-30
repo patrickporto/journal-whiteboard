@@ -1,0 +1,8 @@
+.sheet.journal-entry .journal-entry-page,
+.sheet.journal-entry .journal-entry-page form {
+    height: 100%;
+}
+
+.sheet.journal-entry .journal-entry-page .edit-container {
+    z-index: 300;
+}

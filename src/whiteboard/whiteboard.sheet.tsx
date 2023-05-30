@@ -1,6 +1,7 @@
 import React from "react";
 import * as ReactDOM from "react-dom/client";
 import { WhiteBoardPage } from "./whiteboard-page";
+import "./whiteboard.style.css";
 
 
 export class JournalWhiteboardPageSheet extends JournalPageSheet {
@@ -10,6 +11,7 @@ export class JournalWhiteboardPageSheet extends JournalPageSheet {
         return foundry.utils.mergeObject(super.defaultOptions, {
             width: 600,
             height: 600,
+            classes: ["whiteboard"],
         });
     }
 
