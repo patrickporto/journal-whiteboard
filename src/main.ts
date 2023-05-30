@@ -11,6 +11,7 @@ type Module = {
 const modules: Module[] = [debugModule, whiteboard];
 
 Hooks.on('init', async () => {
+    // ReactDOM.createRoot(document.body);
     for (const module of modules) {
         if (module?.hooks?.init) {
             await module.hooks.init();

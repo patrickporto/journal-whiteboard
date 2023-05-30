@@ -1,14 +1,15 @@
 {
     "compilerOptions": {
-        "target": "es2016",
+        "target": "es2018",
         "rootDir": "src",
         "outDir": "dist",
         "moduleResolution": "node",
         "sourceMap": true,
         "esModuleInterop": true,
-        "strict": true,
+        "strict": false,
         "skipLibCheck": true,
         "strictNullChecks": true,
+        "jsx": "react",
         "paths": {
             "*": [ "./src/types/*"]
         }
