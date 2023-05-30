@@ -18,6 +18,9 @@
     "esmodules": [
         "journal-whiteboard.js"
     ],
+    "styles": [
+        "journal-whiteboard.css"
+    ],
     "documentTypes": {
         "JournalEntryPage": {
             "whiteboard": {}
