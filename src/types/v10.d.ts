@@ -19,3 +19,9 @@ declare const game: any = {
 }
 
 declare const foundry: any = {}
+
+declare const ui: any = {
+    notifications: {
+        error(message: string): void;
+    }
+}

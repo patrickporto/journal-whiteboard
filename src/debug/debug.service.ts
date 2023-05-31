@@ -9,4 +9,11 @@ export class DebugService {
             console.log(`${MODULE_NAME} |`, ...args);
         }
     }
+
+    error(...args: unknown[]) {
+        if (this.debugSettings.debug) {
+            console.error(`${MODULE_NAME} |`, ...args);
+            ui.notifications.error(`${MODULE_NAME} | ${args.join(' ')}`);
+        }
+    }
 }

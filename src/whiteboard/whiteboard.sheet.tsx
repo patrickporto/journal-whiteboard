@@ -2,40 +2,72 @@ import React from "react";
 import * as ReactDOM from "react-dom/client";
 import { WhiteBoardPage } from "./whiteboard-page";
 import "./whiteboard.style.css";
+import { useSnapshot } from "../tldraw/store";
+import { TLInstance, TLUser, TldrawEditorConfig } from "@tldraw/tldraw";
 
 
 export class JournalWhiteboardPageSheet extends JournalPageSheet {
-    private root: ReactDOM.Root | null = null;
+    root: ReactDOM.Root | null = null;
+    object: any;
+    form: HTMLFormElement;
+    snapshot: any = null;
+    isEditable: boolean;
+
 
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
             width: 600,
             height: 600,
             classes: ["whiteboard"],
+            submitOnClose: false,
+            submitOnChange: false
         });
     }
 
-    async _renderInner(): Promise<JQuery<Element>> {
-        const form = document.createElement("form");
-        form.setAttribute("autocomplete", "off");
-        this.renderReact(form);
-        return $(form);
+    async _renderInner(sheet: any): Promise<JQuery<Element>> {
+        this.createForm();
+
+        const tldrawConfig = new TldrawEditorConfig({});
+        const store = tldrawConfig.createStore({
+            initialData: {},
+            userId: TLUser.createCustomId(game.user.id),
+            instanceId: TLInstance.createCustomId(this.object.id),
+        });
+        this.snapshot = useSnapshot(store);
+        const whiteboard = sheet.data.system?.whiteboard
+        if (whiteboard) {
+            this.snapshot.loadSnapshot(JSON.parse(whiteboard));
+        }
+        this.renderReact(sheet, tldrawConfig, store)
+        return $(this.form);
     }
 
-    renderReact(element: HTMLElement) {
-        if (this.root) {
+    createForm() {
+        if (this.form) {
             return
         }
-        this.root = ReactDOM.createRoot(element);
-        this.root.render(<WhiteBoardPage />);
-
+        this.form = document.createElement("form");
+        this.form.setAttribute("autocomplete", "off");
     }
 
-    async close(...args: any[]) {
-        if (this.root) {
-            this.root.unmount();
-            this.root = null;
+    renderReact(sheet: any, tldrawConfig: any, store: any) {
+        if (!this.root) {
+            this.root = ReactDOM.createRoot(this.form);
         }
-        return super.close(...args);
+        this.root.render(<WhiteBoardPage sheet={sheet} store={store} config={tldrawConfig} />);
+    }
+
+    async saveSnapshot() {
+        const snapshot = this.snapshot.getSnapshot();
+        await this.object.update({ ['system.whiteboard']: JSON.stringify(snapshot) }, { diff: false, recursive: true })
+    }
+
+    async close() {
+        this.root?.unmount();
+        this.root = null;
+        if(this.isEditable) {
+            await this.saveSnapshot();
+        }
+        return await super.close();
     }
 }

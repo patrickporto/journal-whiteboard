@@ -1,3 +1,5 @@
+import { EditorAssetUrls } from "@tldraw/tldraw";
+import { UiAssetUrls } from "@tldraw/ui";
 import { CANNONICAL_NAME } from "../constants";
 
 export const formatAssetUrl = (assetUrl) => {
@@ -5,7 +7,7 @@ export const formatAssetUrl = (assetUrl) => {
 }
 
 
-export const getAssetUrlsByImport = () => {
+export const getEditorAssetUrls = (): EditorAssetUrls => {
 	return {
 		fonts: {
 			monospace: formatAssetUrl('fonts/IBMPlexMono-Medium.woff2'),
@@ -14,6 +16,11 @@ export const getAssetUrlsByImport = () => {
 			draw: formatAssetUrl('fonts/Shantell_Sans-Normal-SemiBold.woff2'),
 		},
 
+    }
+}
+
+export const getUiAssetUrls = (): UiAssetUrls => {
+	return {
 		icons: {
 			'align-bottom-center': formatAssetUrl('icons/align-bottom-center.svg'),
 			'align-bottom-left': formatAssetUrl('icons/align-bottom-left.svg'),
