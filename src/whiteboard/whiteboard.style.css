@@ -6,3 +6,11 @@
 .sheet.journal-entry .journal-entry-page .edit-container {
     z-index: 300;
 }
+
+.window-app.whiteboard .window-resizable-handle {
+    z-index: 200;
+}
+
+.window-app.whiteboard .window-content {
+    padding: 0;
+}
