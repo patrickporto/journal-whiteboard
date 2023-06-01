@@ -1,7 +1,9 @@
 import React from 'react';
 import {
+    App,
     Canvas,
     ContextMenu,
+    MenuSchema,
     TLStore,
     TldrawEditor,
     TldrawEditorConfig,
@@ -20,12 +22,28 @@ type WhiteBoardPageProps = {
 const editorAssetUrls = getEditorAssetUrls();
 const uiAssetUrls = getUiAssetUrls();
 
+const menuOverrides = {
+	menu(_app: App, schema: MenuSchema, _helpers: any) {
+		schema.forEach((item) => {
+			if (item.id === 'menu' && item.type === 'group') {
+				item.children = item.children.filter((menuItem) => {
+					if (menuItem.id === 'file' && menuItem.type === 'submenu') {
+						return false
+					}
+					return true
+				})
+			}
+		})
+
+		return schema
+	},
+}
 
 export const WhiteBoardPage = ({ sheet, store, config }: WhiteBoardPageProps) => {
     return (
         <TldrawEditor assetUrls={editorAssetUrls} config={config} store={store}>
             {sheet?.editable ? (
-                <TldrawUi assetUrls={uiAssetUrls}>
+                <TldrawUi assetUrls={uiAssetUrls} overrides={menuOverrides}>
                     <ContextMenu>
                         <Canvas />
                     </ContextMenu>
