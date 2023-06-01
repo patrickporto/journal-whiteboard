@@ -37,6 +37,10 @@ const menuOverrides = {
 
 		return schema
 	},
+    toolbar(_app: App, schema: MenuSchema, _helpers: any) {
+        schema.splice(schema.findIndex((item) => item.id === 'embed'), 1)
+        return schema
+    }
 }
 
 export const WhiteBoardPage = ({ sheet, store, config }: WhiteBoardPageProps) => {
