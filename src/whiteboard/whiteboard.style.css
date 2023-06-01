@@ -17,6 +17,7 @@
 
 .tlui-help-menu,
 .tlui-menu-zone__divider,
-.tlui-popover {
+.tlui-popover,
+.tlui-layout__top {
     display: none;
 }
