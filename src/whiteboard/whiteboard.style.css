@@ -14,3 +14,7 @@
 .window-app.whiteboard .window-content {
     padding: 0;
 }
+
+.tlui-help-menu {
+    display: none;
+}
