@@ -16,8 +16,8 @@ export class JournalWhiteboardPageSheet extends JournalPageSheet {
 
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
-            width: 600,
-            height: 600,
+            width: 960,
+            height: 800,
             classes: ["whiteboard"],
             submitOnClose: false,
             submitOnChange: false
