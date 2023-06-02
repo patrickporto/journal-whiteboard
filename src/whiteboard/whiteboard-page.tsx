@@ -89,15 +89,11 @@ const menuOverrides = {
 export const WhiteBoardPage = ({ sheet, store, config, onMount }: WhiteBoardPageProps) => {
     return (
         <TldrawEditor assetUrls={editorAssetUrls} config={config} store={store} onMount={onMount}>
-            {sheet?.editable ? (
-                <TldrawUi assetUrls={uiAssetUrls} overrides={menuOverrides}>
-                    <ContextMenu>
-                        <Canvas />
-                    </ContextMenu>
-                </TldrawUi>
-            ) : (
-                <Canvas />
-            )}
+            <TldrawUi assetUrls={uiAssetUrls} overrides={menuOverrides}>
+                <ContextMenu>
+                    <Canvas />
+                </ContextMenu>
+            </TldrawUi>
         </TldrawEditor>
     );
 };
