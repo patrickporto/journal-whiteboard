@@ -17,6 +17,7 @@ type WhiteBoardPageProps = {
     sheet: any;
     store: TLStore;
     config: TldrawEditorConfig;
+    onMount: (app: App) => void;
 };
 
 const editorAssetUrls = getEditorAssetUrls();
@@ -85,9 +86,9 @@ const menuOverrides = {
     },
 };
 
-export const WhiteBoardPage = ({ sheet, store, config }: WhiteBoardPageProps) => {
+export const WhiteBoardPage = ({ sheet, store, config, onMount }: WhiteBoardPageProps) => {
     return (
-        <TldrawEditor assetUrls={editorAssetUrls} config={config} store={store}>
+        <TldrawEditor assetUrls={editorAssetUrls} config={config} store={store} onMount={onMount}>
             {sheet?.editable ? (
                 <TldrawUi assetUrls={uiAssetUrls} overrides={menuOverrides}>
                     <ContextMenu>

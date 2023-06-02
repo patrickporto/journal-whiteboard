@@ -25,3 +25,5 @@ declare const ui: any = {
         error(message: string): void;
     }
 }
+
+declare function fromUuid(uuid: string): Promise<any>;
