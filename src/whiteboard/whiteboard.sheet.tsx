@@ -6,6 +6,7 @@ import { useSnapshot } from '../tldraw/store';
 import { App, TLInstance, TLUser, TldrawEditorConfig } from '@tldraw/tldraw';
 import { ActorShape, ActorTool } from '../foundry/actor';
 import { debugService } from '../debug/debug.module';
+import { DocumentShape, DocumentTool } from '../foundry/document';
 
 export class JournalWhiteboardPageSheet extends JournalPageSheet {
     root: ReactDOM.Root | null = null;
@@ -30,8 +31,8 @@ export class JournalWhiteboardPageSheet extends JournalPageSheet {
         this.createForm();
 
         const tldrawConfig = new TldrawEditorConfig({
-            shapes: [ActorShape] as any,
-            tools: [ActorTool],
+            shapes: [ActorShape, DocumentShape] as any,
+            tools: [ActorTool, DocumentTool],
             allowUnknownShapes: true,
         });
         this.store = tldrawConfig.createStore({
@@ -106,6 +107,18 @@ export class JournalWhiteboardPageSheet extends JournalPageSheet {
                     }
                 }
             ])
+            return
         }
+        this.tldrawApp.createShapes([
+            {
+                id: shapeId,
+                type: 'document',
+                x: originalEvent.x - 200,
+                y: originalEvent.y - 200,
+                props: {
+                    id: data.uuid
+                }
+            }
+        ])
     }
 }

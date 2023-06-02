@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { HTMLContainer, TLBaseShape, TLBoxTool, TLBoxUtil, TLOpacityType, defineShape } from "@tldraw/tldraw"
 
-const DEFAULT_ACTOR_IMG = '/icons/svg/mystery-man.svg'
-
-export type ActorShape = TLBaseShape<
-	'actor',
+export type DocumentShape = TLBaseShape<
+	'document',
 	{
 		opacity: TLOpacityType // necessary for all shapes at the moment, others can be whatever you want!
 		w: number
@@ -13,43 +11,39 @@ export type ActorShape = TLBaseShape<
 	}
 >
 
-export const ActorShape = defineShape<ActorShape>({
-	type: 'actor',
-	getShapeUtil: () => ActorUtil,
+export const DocumentShape = defineShape<DocumentShape>({
+	type: 'document',
+	getShapeUtil: () => DocumentUtil,
 })
 
-export class ActorUtil extends TLBoxUtil<ActorShape> {
-	// Id — the shape util's id
-	static type = 'actor'
+export class DocumentUtil extends TLBoxUtil<DocumentShape> {
+	static type = 'document'
 
-	// Flags — there are a LOT of other flags!
-	override isAspectRatioLocked = (_shape: ActorShape) => false
-	override canResize = (_shape: ActorShape) => true
-	override canBind = (_shape: ActorShape) => true
+	override isAspectRatioLocked = (_shape: DocumentShape) => false
+	override canResize = (_shape: DocumentShape) => true
+	override canBind = (_shape: DocumentShape) => true
 
 	// Default props — used for shapes created with the tool
-	override defaultProps(): ActorShape['props'] {
+	override defaultProps(): DocumentShape['props'] {
 		return {
 			opacity: '1',
 			w: 200,
-			h: 200,
+			h: 48,
             id: '',
 		}
 	}
 
 	// Render method — the React component that will be rendered for the shape
-	render(shape: ActorShape) {
-        const [actor, setActor] = useState<{
-            img: string,
+	render(shape: DocumentShape) {
+        const [document, setDocument] = useState<{
             name: string
         }>({
-            img: DEFAULT_ACTOR_IMG,
-            name: 'Actor'
+            name: 'Document'
         })
         useEffect(() => {
             async function getDocument() {
                 const document = await fromUuid(shape.props.id)
-                setActor(document)
+                setDocument(document)
 
             }
             getDocument()
@@ -64,19 +58,19 @@ export class ActorUtil extends TLBoxUtil<ActorShape> {
 					pointerEvents: 'all',
 				}}
 			>
-                <img src={actor.img} data-edit="img" alt={actor.name}></img>
+                {document.name}
 			</HTMLContainer>
 		)
 	}
 
 	// Indicator — used when hovering over a shape or when it's selected; must return only SVG elements here
-	indicator(shape: ActorShape) {
+	indicator(shape: DocumentShape) {
 		return <rect width={shape.props.w} height={shape.props.h} />
 	}
 }
 
-export class ActorTool extends TLBoxTool {
-	static override id = 'actor'
+export class DocumentTool extends TLBoxTool {
+	static override id = 'document'
 	static override initial = 'idle'
-	override shapeType = 'actor'
+	override shapeType = 'document'
 }
