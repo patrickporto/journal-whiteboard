@@ -1,5 +1,6 @@
 import debugModule from './debug/debug.module';
-import whiteboard from './whiteboard/whiteboard.module';
+import tldrawModule from './tldraw/tldraw.module';
+import whiteboardModule from './whiteboard/whiteboard.module';
 
 type Module = {
     hooks: {
@@ -8,7 +9,7 @@ type Module = {
     };
 };
 
-const modules: Module[] = [debugModule, whiteboard];
+const modules: Module[] = [debugModule, tldrawModule, whiteboardModule];
 
 Hooks.on('init', async () => {
     // ReactDOM.createRoot(document.body);

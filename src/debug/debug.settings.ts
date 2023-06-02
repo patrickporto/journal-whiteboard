@@ -2,9 +2,9 @@ import { CANNONICAL_NAME } from '../constants';
 
 export class DebugSettings {
     registerSettings() {
-        (game as Game).settings.register(CANNONICAL_NAME, 'debug', {
-            name: (game as Game).i18n.localize('JW.Debug'),
-            hint: (game as Game).i18n.localize('JW.DebugHint'),
+        game.settings.register(CANNONICAL_NAME, 'debug', {
+            name: game.i18n.localize('JW.Debug'),
+            hint: game.i18n.localize('JW.DebugHint'),
             scope: 'world',
             config: true,
             default: false,
@@ -13,6 +13,6 @@ export class DebugSettings {
     }
 
     get debug() {
-        return (game as Game).settings.get(CANNONICAL_NAME, 'debug');
+        return game.settings.get(CANNONICAL_NAME, 'debug');
     }
 }

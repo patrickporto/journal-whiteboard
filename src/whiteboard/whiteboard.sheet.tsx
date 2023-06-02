@@ -7,6 +7,7 @@ import { App, TLInstance, TLUser, TldrawEditorConfig } from '@tldraw/tldraw';
 import { ActorShape, ActorTool } from '../foundry/actor';
 import { debugService } from '../debug/debug.module';
 import { DocumentShape, DocumentTool } from '../foundry/document';
+import { tldrawSettings } from '../tldraw/tldraw.module';
 
 export class JournalWhiteboardPageSheet extends JournalPageSheet {
     root: ReactDOM.Root | null = null;
@@ -62,6 +63,11 @@ export class JournalWhiteboardPageSheet extends JournalPageSheet {
 
     handleMount = (app: App) => {
         this.tldrawApp = app
+        if (tldrawSettings.theme === 'dark') {
+            this.tldrawApp.setDarkMode(true)
+        } else {
+            this.tldrawApp.setDarkMode(false)
+        }
         if (!this.isEditable) {
             this.tldrawApp.enableReadOnlyMode()
         }

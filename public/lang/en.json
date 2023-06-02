@@ -1,5 +1,9 @@
 {
+    "TYPES.JournalEntryPage.journal-whiteboard.whiteboard": "Whiteboard",
     "JW.Debug": "Debug",
     "JW.DebugHint": "Enable debug logging",
-    "TYPES.JournalEntryPage.journal-whiteboard.whiteboard": "Whiteboard"
+    "JW.Theme": "Theme",
+    "JW.ThemeHint": "Select a theme between light and dark",
+    "JW.ThemeLight": "Light",
+    "JW.ThemeDark": "Dark"
 }
