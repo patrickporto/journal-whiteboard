@@ -98,6 +98,8 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
                     },
                 },
             ]);
+            this.tldrawApp.setSelectedIds([shapeId])
+            this.tldrawApp.setSelectedTool('select.idle')
             return;
         }
         this.tldrawApp.createShapes([
@@ -111,5 +113,8 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
                 },
             },
         ]);
+        this.tldrawApp.setSelectedIds([shapeId])
+        this.tldrawApp.setSelectedTool('select.idle')
+
     }
 }
