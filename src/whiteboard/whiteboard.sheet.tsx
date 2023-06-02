@@ -1,5 +1,4 @@
 import React from 'react';
-import * as ReactDOM from 'react-dom/client';
 import { WhiteBoardPage } from './whiteboard-page';
 import './whiteboard.style.css';
 import { useSnapshot } from '../tldraw/store';
@@ -8,35 +7,29 @@ import { ActorShape, ActorTool } from '../foundry/actor';
 import { debugService } from '../debug/debug.module';
 import { DocumentShape, DocumentTool } from '../foundry/document';
 import { tldrawSettings } from '../tldraw/tldraw.module';
+import { JournalPageSheetReact } from '../foundry/journal-page.sheet';
 
-export class JournalWhiteboardPageSheet extends JournalPageSheet {
-    root: ReactDOM.Root | null = null;
-    object: any;
-    form: HTMLFormElement;
+export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
     snapshot: any = null;
-    isEditable: boolean;
     store: any;
     tldrawApp: App;
+    tldrawConfig: TldrawEditorConfig;
 
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
             width: 960,
             height: 800,
             classes: ['whiteboard'],
-            submitOnClose: false,
-            submitOnChange: false,
         });
     }
 
-    async _renderInner(sheet: any): Promise<JQuery<Element>> {
-        this.createForm();
-
-        const tldrawConfig = new TldrawEditorConfig({
+    componentDidMount(sheet: any) {
+        this.tldrawConfig = new TldrawEditorConfig({
             shapes: [ActorShape, DocumentShape] as any,
             tools: [ActorTool, DocumentTool],
             allowUnknownShapes: true,
         });
-        this.store = tldrawConfig.createStore({
+        this.store = this.tldrawConfig.createStore({
             initialData: {},
             userId: TLUser.createCustomId(game.user.id),
             instanceId: TLInstance.createCustomId(this.object.id),
@@ -46,38 +39,32 @@ export class JournalWhiteboardPageSheet extends JournalPageSheet {
         if (whiteboard) {
             this.snapshot.loadSnapshot(JSON.parse(whiteboard));
         }
-        this.renderReact(sheet, tldrawConfig, this.store);
-        return $(this.form);
-    }
-
-    createForm() {
-        if (this.form) {
-            return;
-        }
-        this.form = document.createElement('form');
-        this.form.setAttribute('autocomplete', 'off');
         if (this.isEditable) {
             $(this.form).on('drop', this._onDrop.bind(this));
         }
     }
 
     handleMount = (app: App) => {
-        this.tldrawApp = app
+        this.tldrawApp = app;
         if (tldrawSettings.theme === 'dark') {
-            this.tldrawApp.setDarkMode(true)
+            this.tldrawApp.setDarkMode(true);
         } else {
-            this.tldrawApp.setDarkMode(false)
+            this.tldrawApp.setDarkMode(false);
         }
         if (!this.isEditable) {
-            this.tldrawApp.enableReadOnlyMode()
+            this.tldrawApp.enableReadOnlyMode();
         }
-    }
+    };
 
-    renderReact(sheet: any, tldrawConfig: any, store: any) {
-        if (!this.root) {
-            this.root = ReactDOM.createRoot(this.form);
-        }
-        this.root.render(<WhiteBoardPage sheet={sheet} store={store} config={tldrawConfig} onMount={this.handleMount} />);
+    renderReact({ sheet }: any) {
+        return (
+            <WhiteBoardPage
+                sheet={sheet}
+                store={this.store}
+                config={this.tldrawConfig}
+                onMount={this.handleMount}
+            />
+        );
     }
 
     async saveSnapshot() {
@@ -89,8 +76,6 @@ export class JournalWhiteboardPageSheet extends JournalPageSheet {
     }
 
     async close() {
-        this.root?.unmount();
-        this.root = null;
         if (this.isEditable) {
             await this.saveSnapshot();
         }
@@ -109,11 +94,11 @@ export class JournalWhiteboardPageSheet extends JournalPageSheet {
                     x: originalEvent.x - 200,
                     y: originalEvent.y - 200,
                     props: {
-                        id: data.uuid
-                    }
-                }
-            ])
-            return
+                        id: data.uuid,
+                    },
+                },
+            ]);
+            return;
         }
         this.tldrawApp.createShapes([
             {
@@ -122,9 +107,9 @@ export class JournalWhiteboardPageSheet extends JournalPageSheet {
                 x: originalEvent.x - 200,
                 y: originalEvent.y - 200,
                 props: {
-                    id: data.uuid
-                }
-            }
-        ])
+                    id: data.uuid,
+                },
+            },
+        ]);
     }
 }
