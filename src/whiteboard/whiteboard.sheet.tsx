@@ -61,6 +61,9 @@ export class JournalWhiteboardPageSheet extends JournalPageSheet {
 
     handleMount = (app: App) => {
         this.tldrawApp = app
+        if (!this.isEditable) {
+            this.tldrawApp.enableReadOnlyMode()
+        }
     }
 
     renderReact(sheet: any, tldrawConfig: any, store: any) {
