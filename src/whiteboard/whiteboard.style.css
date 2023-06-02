@@ -21,3 +21,8 @@
 .tlui-layout__top {
     display: none;
 }
+
+.whiteboard button:hover, button:focus {
+    box-shadow: none;
+}
+
