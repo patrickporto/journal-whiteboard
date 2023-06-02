@@ -10,8 +10,6 @@ export type ActorShape = TLBaseShape<
 		w: number
 		h: number,
         id: string,
-        img: string,
-        name: string
 	}
 >
 
@@ -35,8 +33,6 @@ export class ActorUtil extends TLBoxUtil<ActorShape> {
 			opacity: '1',
 			w: 200,
 			h: 200,
-            img: DEFAULT_ACTOR_IMG,
-            name: 'Actor',
             id: '',
 		}
 	}

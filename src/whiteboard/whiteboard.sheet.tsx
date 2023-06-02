@@ -93,8 +93,7 @@ export class JournalWhiteboardPageSheet extends JournalPageSheet {
     async _onDrop({ originalEvent }: any) {
         const data = JSON.parse(originalEvent.dataTransfer?.getData('text/plain') ?? '');
         debugService.log('Drop', data);
-        const document = await fromUuid(data.uuid);
-        const shapeId = this.tldrawApp.createShapeId(data.uuid);
+        const shapeId = this.tldrawApp.createShapeId();
         if (data.type === 'Actor') {
             this.tldrawApp.createShapes([
                 {
@@ -103,8 +102,7 @@ export class JournalWhiteboardPageSheet extends JournalPageSheet {
                     x: originalEvent.x - 200,
                     y: originalEvent.y - 200,
                     props: {
-                        id: data.uuid,
-                        name: document.name,
+                        id: data.uuid
                     }
                 }
             ])
