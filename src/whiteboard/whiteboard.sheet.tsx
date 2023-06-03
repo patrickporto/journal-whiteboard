@@ -3,9 +3,9 @@ import { WhiteBoardPage } from './whiteboard-page';
 import './whiteboard.style.css';
 import { useSnapshot } from '../tldraw/store';
 import { App, TLInstance, TLUser, TldrawEditorConfig } from '@tldraw/tldraw';
-import { ActorShape, ActorTool } from '../tldraw/custom-components/actor';
+import { ActorShape, ActorTool } from './custom-components/actor';
 import { debugService } from '../debug/debug.module';
-import { DocumentShape, DocumentTool } from '../tldraw/custom-components/document';
+import { DocumentShape, DocumentTool } from './custom-components/document';
 import { tldrawSettings } from '../tldraw/tldraw.module';
 import { JournalPageSheetReact } from '../foundry/journal-page.sheet';
 
