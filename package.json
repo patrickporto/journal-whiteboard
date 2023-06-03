@@ -32,7 +32,7 @@
         "prettier": "2.8.7",
         "prettier-eslint": "^15.0.1",
         "typescript": "^4.9.5",
-        "vite": "^4.2.1"
+        "vite": "^4.3.9"
     },
     "lint-staged": {
         "**/*.{ts,js}": [
@@ -52,6 +52,7 @@
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "signia": "^0.1.4",
-        "signia-react": "^0.1.4"
+        "signia-react": "^0.1.4",
+        "styled-components": "^5.3.11"
     }
 }
