@@ -33,6 +33,11 @@ export class DocumentUtil extends TLBoxUtil<DocumentShape> {
 		}
 	}
 
+    onClick = async (shape: PlaylistSoundShape) => {
+        const document = await fromUuid(shape.props.id);
+        document?.sheet?.render(true)
+    }
+
 	// Render method — the React component that will be rendered for the shape
 	render(shape: DocumentShape) {
         const [document, setDocument] = useState<{

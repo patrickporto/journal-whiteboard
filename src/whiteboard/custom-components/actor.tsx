@@ -37,6 +37,11 @@ export class ActorUtil extends TLBoxUtil<ActorShape> {
 		}
 	}
 
+    onClick = async (shape: PlaylistSoundShape) => {
+        const document = await fromUuid(shape.props.id);
+        document?.sheet?.render(true)
+    }
+
 	// Render method — the React component that will be rendered for the shape
 	render(shape: ActorShape) {
         const [actor, setActor] = useState<{
