@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { HTMLContainer, TLBaseShape, TLBoxTool, TLBoxUtil, TLOpacityType, defineShape } from "@tldraw/tldraw"
+import styled from 'styled-components'
 
-const componentType = 'document'
+const DEFAULT_IMAGE = '/icons/svg/dice-target.svg'
 
-export type DocumentShape = TLBaseShape<
-	'document',
+export type MacroShape = TLBaseShape<
+	'macro',
 	{
 		opacity: TLOpacityType // necessary for all shapes at the moment, others can be whatever you want!
 		w: number
@@ -13,20 +14,20 @@ export type DocumentShape = TLBaseShape<
 	}
 >
 
-export const DocumentShape = defineShape<DocumentShape>({
-	type: componentType,
-	getShapeUtil: () => DocumentUtil,
+export const MacroShape = defineShape<MacroShape>({
+	type: 'macro',
+	getShapeUtil: () => MacroUtil,
 })
 
-export class DocumentUtil extends TLBoxUtil<DocumentShape> {
-	static type = componentType
+export class MacroUtil extends TLBoxUtil<MacroShape> {
+	static type = 'macro'
 
-	override isAspectRatioLocked = (_shape: DocumentShape) => false
-	override canResize = (_shape: DocumentShape) => true
-	override canBind = (_shape: DocumentShape) => true
+	override isAspectRatioLocked = (_shape: MacroShape) => false
+	override canResize = (_shape: MacroShape) => true
+	override canBind = (_shape: MacroShape) => true
 
 	// Default props — used for shapes created with the tool
-	override defaultProps(): DocumentShape['props'] {
+	override defaultProps(): MacroShape['props'] {
 		return {
 			opacity: '1',
 			w: 200,
@@ -35,17 +36,19 @@ export class DocumentUtil extends TLBoxUtil<DocumentShape> {
 		}
 	}
 
-    onClick = async (shape: DocumentShape) => {
+    onClick = async (shape: MacroShape) => {
         const document = await fromUuid(shape.props.id);
-        document?.sheet?.render(true)
+        document?.execute()
     }
 
 	// Render method — the React component that will be rendered for the shape
-	render(shape: DocumentShape) {
+	render(shape: MacroShape) {
         const [document, setDocument] = useState<{
             name: string
+            img: string
         }>({
-            name: componentType
+            name: 'Macro',
+            img: DEFAULT_IMAGE,
         })
         useEffect(() => {
             async function getDocument() {
@@ -61,23 +64,39 @@ export class DocumentUtil extends TLBoxUtil<DocumentShape> {
 				style={{
 					display: 'flex',
 					alignItems: 'center',
-					justifyContent: 'center',
+					justifyContent: 'start',
 					pointerEvents: 'all',
 				}}
 			>
-                {document.name}
+            <MacroImage src={document.img} />
+            <MacroName>{document.name}</MacroName>
 			</HTMLContainer>
 		)
 	}
 
 	// Indicator — used when hovering over a shape or when it's selected; must return only SVG elements here
-	indicator(shape: DocumentShape) {
+	indicator(shape: MacroShape) {
 		return <rect width={shape.props.w} height={shape.props.h} />
 	}
 }
 
-export class DocumentTool extends TLBoxTool {
-	static override id = componentType
+
+const MacroName = styled.div`
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+`;
+
+const MacroImage = styled.img<{playing: boolean}>`
+    width: 36px;
+    height: 36px;
+    margin-left: 8px;
+    margin-right: 16px;
+    border: none;
+`;
+
+export class MacroTool extends TLBoxTool {
+	static override id = 'macro'
 	static override initial = 'idle'
-	override shapeType = componentType
+	override shapeType = 'macro'
 }

@@ -86,9 +86,7 @@ export class PlaylistSoundUtil extends TLBoxUtil<PlaylistSoundShape> {
                     pointerEvents: 'all',
                 }}
             >
-                <PlaylistSoundIcon playing={document.playing} onClick={() => {
-                    console.log('click');
-                }}>
+                <PlaylistSoundIcon playing={document.playing}>
                     {document.playing ? (
                         <i className="fas fa-square"></i>
                     ) : (

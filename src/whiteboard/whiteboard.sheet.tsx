@@ -9,9 +9,10 @@ import { DocumentShape, DocumentTool } from './custom-components/document';
 import { tldrawSettings } from '../tldraw/tldraw.module';
 import { JournalPageSheetReact } from '../foundry/journal-page.sheet';
 import { PlaylistSoundShape, PlaylistSoundTool } from './custom-components/playlist-sound';
+import { MacroShape, MacroTool } from './custom-components/macro';
 
-const shapes = [ActorShape, PlaylistSoundShape, DocumentShape] as any;
-const tools = [ActorTool, PlaylistSoundTool, DocumentTool];
+const shapes = [ActorShape, PlaylistSoundShape, DocumentShape, MacroShape] as any;
+const tools = [ActorTool, PlaylistSoundTool, DocumentTool, MacroTool];
 
 export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
     snapshot: any = null;
@@ -117,6 +118,21 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
                 {
                     id: shapeId,
                     type: 'playlist_sound',
+                    x: originalEvent.x - 200,
+                    y: originalEvent.y - 200,
+                    props: {
+                        id: data.uuid,
+                        type: data.type,
+                    },
+                },
+            ]);
+            return
+        }
+        if (data.type === 'Macro') {
+            this.tldrawApp.createShapes([
+                {
+                    id: shapeId,
+                    type: 'macro',
                     x: originalEvent.x - 200,
                     y: originalEvent.y - 200,
                     props: {
