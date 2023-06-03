@@ -1,10 +1,9 @@
-import { App } from "@tldraw/tldraw";
-import { MenuSchema, TldrawUiOverrides, ToolbarSchemaContextType } from "@tldraw/ui";
-import { debugService } from "../debug/debug.module";
+import { App } from '@tldraw/tldraw';
+import { MenuSchema, TldrawUiOverrides, ToolbarSchemaContextType } from '@tldraw/ui';
+import { debugService } from '../debug/debug.module';
 
 export const menuOverrides: Partial<TldrawUiOverrides> = {
     contextMenu: (app: App, schema: MenuSchema, helpers) => {
-        debugService.log('contextMenu', app, schema, helpers);
         unregisterConversionsFromContextMenu(schema);
         registerWhiteboardContextMenu(app, schema, helpers);
         registerFoundryDocumentContextMenu(app, schema, helpers);
@@ -22,7 +21,7 @@ export const menuOverrides: Partial<TldrawUiOverrides> = {
 function unregisterConversionsFromContextMenu(schema: MenuSchema) {
     schema.splice(
         schema.findIndex(item => item.id === 'conversions'),
-        1
+        1,
     );
 }
 
@@ -49,7 +48,7 @@ function registerWhiteboardContextMenu(app: App, schema: MenuSchema, helpers: an
                     },
                     checked: true,
                     readonlyOk: true,
-                    disabled: false
+                    disabled: false,
                 },
             ],
         });
@@ -57,11 +56,10 @@ function registerWhiteboardContextMenu(app: App, schema: MenuSchema, helpers: an
 }
 
 function registerFoundryDocumentContextMenu(app: App, schema: MenuSchema, helpers: any) {
-    const selectedShapes = app.selectedShapes
-    const selectedShape = selectedShapes?.[0]
-    debugService.log('registerFoundryDocumentContextMenu', selectedShapes, selectedShape);
-    if (selectedShapes.length !== 1 || !['document', 'actor'].includes(selectedShape.type)) {
-        return
+    const selectedShapes = app.selectedShapes;
+    const selectedShape = selectedShapes?.[0];
+    if (!selectedShape || selectedShapes.length !== 1 || !['document', 'actor'].includes(selectedShape.type)) {
+        return;
     }
     schema.unshift({
         id: 'foundry-document-group',
@@ -78,13 +76,13 @@ function registerFoundryDocumentContextMenu(app: App, schema: MenuSchema, helper
                     label: game.i18n.localize('JW.OpenSheet'),
                     readonlyOk: true,
                     onSelect: async () => {
-                        const document = await fromUuid(selectedShape.props.id)
-                        document.sheet.render(true)
+                        const document = await fromUuid(selectedShape.props.id);
+                        document.sheet.render(true);
                     },
                 },
                 checked: true,
                 readonlyOk: true,
-                disabled: !selectedShape?.props?.id
+                disabled: !selectedShape?.props?.id,
             },
         ],
     });

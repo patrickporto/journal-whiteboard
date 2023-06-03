@@ -8,7 +8,6 @@ import {
     defineShape,
 } from '@tldraw/tldraw';
 import styled from 'styled-components';
-import { debugService } from '../../debug/debug.module';
 
 export type PlaylistSoundShape = TLBaseShape<
     'playlist_sound',
@@ -22,16 +21,11 @@ export type PlaylistSoundShape = TLBaseShape<
 
 export const PlaylistSoundShape = defineShape<PlaylistSoundShape>({
     type: 'playlist_sound',
-    getShapeUtil: () => DocumentUtil,
+    getShapeUtil: () => PlaylistSoundUtil,
 });
 
-export class PlaylistSoundTool extends TLBoxTool {
-    static override id = 'playlist_sound';
-    static override initial = 'idle';
-    override shapeType = 'playlist_sound';
-}
 
-export class DocumentUtil extends TLBoxUtil<PlaylistSoundShape> {
+export class PlaylistSoundUtil extends TLBoxUtil<PlaylistSoundShape> {
     static type = 'playlist_sound';
 
     override isAspectRatioLocked = (_shape: PlaylistSoundShape) => false;
@@ -46,6 +40,16 @@ export class DocumentUtil extends TLBoxUtil<PlaylistSoundShape> {
             h: 48,
             id: '',
         };
+    }
+
+    onClick = async (shape: PlaylistSoundShape) => {
+        const document = await fromUuid(shape.props.id);
+        if (document.sound.playing) {
+            document.parent.stopSound(document)
+        }
+        else {
+            document.parent.playSound(document)
+        }
     }
 
     // Render method — the React component that will be rendered for the shape
@@ -63,7 +67,6 @@ export class DocumentUtil extends TLBoxUtil<PlaylistSoundShape> {
             async function getDocument() {
                 const document = await fromUuid(shape.props.id);
                 setDocument(document);
-                debugService.log('sound', document.sound);
                 document.sound.on('start', async () => {
                     setDocument(prev => ({...prev, playing: true}));
                 });
@@ -73,7 +76,6 @@ export class DocumentUtil extends TLBoxUtil<PlaylistSoundShape> {
             }
             getDocument();
         }, [shape.props.id]);
-        debugService.log('PlaylistSound', document);
         return (
             <HTMLContainer
                 id={shape.id}
@@ -84,7 +86,9 @@ export class DocumentUtil extends TLBoxUtil<PlaylistSoundShape> {
                     pointerEvents: 'all',
                 }}
             >
-                <PlaylistSoundIcon playing={document.playing}>
+                <PlaylistSoundIcon playing={document.playing} onClick={() => {
+                    console.log('click');
+                }}>
                     {document.playing ? (
                         <i className="fas fa-square"></i>
                     ) : (
@@ -110,7 +114,12 @@ const PlaylistSoundName = styled.div`
 
 const PlaylistSoundIcon = styled.div<{playing: boolean}>`
     font-size: 24px;
-    pointer-events: 'all';
     padding: 16px;
-    color: ${props => (props.playing ? 'var(--color-text-hyperlink)' : 'var(--color-text)')};} ;
+    color: ${props => (props.playing ? 'var(--color-text-hyperlink)' : 'var(--color-text)')};
 `;
+
+export class PlaylistSoundTool extends TLBoxTool {
+    static override id = 'playlist_sound';
+    static override initial = 'idle';
+    override shapeType = 'playlist_sound';
+}
