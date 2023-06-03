@@ -10,9 +10,10 @@ import { tldrawSettings } from '../tldraw/tldraw.module';
 import { JournalPageSheetReact } from '../foundry/journal-page.sheet';
 import { PlaylistSoundShape, PlaylistSoundTool } from './custom-components/playlist-sound';
 import { MacroShape, MacroTool } from './custom-components/macro';
+import { PlaylistShape, PlaylistTool } from './custom-components/playlist';
 
-const shapes = [ActorShape, PlaylistSoundShape, DocumentShape, MacroShape] as any;
-const tools = [ActorTool, PlaylistSoundTool, DocumentTool, MacroTool];
+const shapes = [ActorShape, PlaylistSoundShape, DocumentShape, MacroShape, PlaylistShape] as any;
+const tools = [ActorTool, PlaylistSoundTool, DocumentTool, MacroTool, PlaylistTool];
 
 export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
     snapshot: any = null;
@@ -119,7 +120,22 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
                     id: shapeId,
                     type: 'playlist_sound',
                     x: originalEvent.x - 200,
-                    y: originalEvent.y - 200,
+                    y: originalEvent.y - 48,
+                    props: {
+                        id: data.uuid,
+                        type: data.type,
+                    },
+                },
+            ]);
+            return
+        }
+        if (data.type === 'Playlist') {
+            this.tldrawApp.createShapes([
+                {
+                    id: shapeId,
+                    type: 'playlist',
+                    x: originalEvent.x - 200,
+                    y: originalEvent.y - 48,
                     props: {
                         id: data.uuid,
                         type: data.type,
@@ -134,7 +150,7 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
                     id: shapeId,
                     type: 'macro',
                     x: originalEvent.x - 200,
-                    y: originalEvent.y - 200,
+                    y: originalEvent.y - 48,
                     props: {
                         id: data.uuid,
                         type: data.type,
@@ -148,7 +164,7 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
                 id: shapeId,
                 type: 'document',
                 x: originalEvent.x - 200,
-                y: originalEvent.y - 200,
+                y: originalEvent.y - 48,
                 props: {
                     id: data.uuid,
                     type: data.type,
