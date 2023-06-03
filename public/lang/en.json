@@ -5,5 +5,6 @@
     "JW.Theme": "Theme",
     "JW.ThemeHint": "Select a theme between light and dark",
     "JW.ThemeLight": "Light",
-    "JW.ThemeDark": "Dark"
+    "JW.ThemeDark": "Dark",
+    "JW.OpenSheet": "Open sheet"
 }
