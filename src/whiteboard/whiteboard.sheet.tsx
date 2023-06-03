@@ -46,6 +46,7 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
 
     handleMount = (app: App) => {
         this.tldrawApp = app;
+        debugService.log('Tldraw App', app);
         if (tldrawSettings.theme === 'dark') {
             this.tldrawApp.setDarkMode(true);
         } else {
