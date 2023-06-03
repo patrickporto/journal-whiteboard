@@ -37,7 +37,7 @@ export class ActorUtil extends TLBoxUtil<ActorShape> {
 		}
 	}
 
-    onClick = async (shape: PlaylistSoundShape) => {
+    onClick = async (shape: ActorShape) => {
         const document = await fromUuid(shape.props.id);
         document?.sheet?.render(true)
     }

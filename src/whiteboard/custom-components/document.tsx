@@ -33,7 +33,7 @@ export class DocumentUtil extends TLBoxUtil<DocumentShape> {
 		}
 	}
 
-    onClick = async (shape: PlaylistSoundShape) => {
+    onClick = async (shape: DocumentShape) => {
         const document = await fromUuid(shape.props.id);
         document?.sheet?.render(true)
     }
