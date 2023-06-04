@@ -41,15 +41,6 @@ export class PlaylistSoundUtil extends TLBoxUtil<PlaylistSoundShape> {
         };
     }
 
-    onClick = async (shape: PlaylistSoundShape) => {
-        const document = await fromUuid(shape.props.id);
-        if (document.sound.playing) {
-            document.parent.stopSound(document);
-        } else {
-            document.parent.playSound(document);
-        }
-    };
-
     // Render method — the React component that will be rendered for the shape
     render(shape: PlaylistSoundShape) {
         const [document, setDocument] = useState<{
