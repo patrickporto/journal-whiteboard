@@ -26,6 +26,7 @@ export const JournalEntryPageShape = defineShape<JournalEntryPageShape>({
     getShapeUtil: () => JournalEntryPageUtil,
 });
 
+const PREVIEW_MIN_HEIGHT = 100;
 export class JournalEntryPageUtil extends TLBoxUtil<JournalEntryPageShape> {
     static type = componentType;
 
@@ -45,7 +46,7 @@ export class JournalEntryPageUtil extends TLBoxUtil<JournalEntryPageShape> {
 
     onClick = async (shape: JournalEntryPageShape) => {
         const document = await fromUuid(shape.props.id);
-        document?.sheet?.render();
+        document?.sheet?.render(true);
     };
 
     // Render method — the React component that will be rendered for the shape
@@ -82,7 +83,7 @@ export class JournalEntryPageUtil extends TLBoxUtil<JournalEntryPageShape> {
                     pointerEvents: 'all',
                 }}
             >
-                {bounds.h > 100 ? (
+                {bounds.h > PREVIEW_MIN_HEIGHT ? (
                     <JournalEntryPage>
                     <JournalEntryPageHeader>{document.name}</JournalEntryPageHeader>
                     <JournalEntryPageContent ref={contentRef} dangerouslySetInnerHTML={{ __html: content }} />
