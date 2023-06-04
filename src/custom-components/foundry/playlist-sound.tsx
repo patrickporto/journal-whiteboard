@@ -112,7 +112,8 @@ const PlaylistSoundName = styled.div`
 
 const PlaylistSoundIcon = styled.div<{playing: boolean}>`
     font-size: 24px;
-    padding: 16px;
+    padding: 8px;
+    padding-left: 16px;
     color: ${props => (props.playing ? 'var(--color-text-hyperlink)' : 'var(--color-text)')};
 `;
 

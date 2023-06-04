@@ -91,7 +91,7 @@ const MacroImage = styled.img<{playing: boolean}>`
     width: 36px;
     height: 36px;
     margin-left: 8px;
-    margin-right: 16px;
+    margin-right: 8px;
     border: none;
 `;
 

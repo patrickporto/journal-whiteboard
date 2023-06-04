@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { HTMLContainer, TLBaseShape, TLBoxTool, TLBoxUtil, TLOpacityType, defineShape } from "@tldraw/tldraw"
+import styled from 'styled-components'
 
-const DEFAULT_ACTOR_IMG = '/icons/svg/mystery-man.svg'
+const DEFAULT_IMAGE = '/icons/svg/dice-target.svg'
 
-export type ActorShape = TLBaseShape<
-	'actor',
+const componentType = 'rolltable'
+
+export type RolltableShape = TLBaseShape<
+	'rolltable',
 	{
 		opacity: TLOpacityType // necessary for all shapes at the moment, others can be whatever you want!
 		w: number
@@ -13,48 +16,47 @@ export type ActorShape = TLBaseShape<
 	}
 >
 
-export const ActorShape = defineShape<ActorShape>({
-	type: 'actor',
-	getShapeUtil: () => ActorUtil,
+export const RolltableShape = defineShape<RolltableShape>({
+	type: componentType,
+	getShapeUtil: () => RolltableUtil,
 })
 
-export class ActorUtil extends TLBoxUtil<ActorShape> {
-	// Id — the shape util's id
-	static type = 'actor'
+export class RolltableUtil extends TLBoxUtil<RolltableShape> {
+	static type = componentType
 
-	// Flags — there are a LOT of other flags!
-	override isAspectRatioLocked = (_shape: ActorShape) => false
-	override canResize = (_shape: ActorShape) => true
-	override canBind = (_shape: ActorShape) => true
+	override isAspectRatioLocked = (_shape: RolltableShape) => false
+	override canResize = (_shape: RolltableShape) => true
+	override canBind = (_shape: RolltableShape) => true
 
 	// Default props — used for shapes created with the tool
-	override defaultProps(): ActorShape['props'] {
+	override defaultProps(): RolltableShape['props'] {
 		return {
 			opacity: '1',
 			w: 200,
-			h: 200,
+			h: 48,
             id: '',
 		}
 	}
 
-    onClick = async (shape: ActorShape) => {
+    onClick = async (shape: RolltableShape) => {
         const document = await fromUuid(shape.props.id);
-        document?.sheet?.render(true)
+        console.log(document)
+        document?.draw()
     }
 
 	// Render method — the React component that will be rendered for the shape
-	render(shape: ActorShape) {
-        const [actor, setActor] = useState<{
-            img: string,
+	render(shape: RolltableShape) {
+        const [document, setDocument] = useState<{
             name: string
+            img: string
         }>({
-            img: DEFAULT_ACTOR_IMG,
-            name: 'Actor'
+            name: componentType,
+            img: DEFAULT_IMAGE,
         })
         useEffect(() => {
             async function getDocument() {
                 const document = await fromUuid(shape.props.id)
-                setActor(document)
+                setDocument(document)
 
             }
             getDocument()
@@ -65,23 +67,24 @@ export class ActorUtil extends TLBoxUtil<ActorShape> {
 				style={{
 					display: 'flex',
 					alignItems: 'center',
-					justifyContent: 'center',
+					justifyContent: 'start',
 					pointerEvents: 'all',
 				}}
 			>
-                <img src={actor.img} data-edit="img" alt={actor.name}></img>
+            <RolltableImage src={document.img} />
+            <RolltableName>{document.name}</RolltableName>
 			</HTMLContainer>
 		)
 	}
 
 	// Indicator — used when hovering over a shape or when it's selected; must return only SVG elements here
-	indicator(shape: ActorShape) {
+	indicator(shape: RolltableShape) {
 		return <rect width={shape.props.w} height={shape.props.h} />
 	}
 
     getContextMenuItems = (shape: ActorShape) => {
         return {
-            id: 'actor-context-menu',
+            id: 'rolltable-context-menu',
             type: 'group',
             checkbox: false,
             disabled: false,
@@ -108,8 +111,23 @@ export class ActorUtil extends TLBoxUtil<ActorShape> {
     }
 }
 
-export class ActorTool extends TLBoxTool {
-	static override id = 'actor'
+
+const RolltableName = styled.div`
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+`;
+
+const RolltableImage = styled.img<{playing: boolean}>`
+    width: 36px;
+    height: 36px;
+    margin-left: 8px;
+    margin-right: 8px;
+    border: none;
+`;
+
+export class RolltableTool extends TLBoxTool {
+	static override id = componentType
 	static override initial = 'idle'
-	override shapeType = 'actor'
+	override shapeType = componentType
 }
