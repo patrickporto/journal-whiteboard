@@ -75,6 +75,34 @@ export class JournalEntryUtil extends TLBoxUtil<JournalEntryShape> {
 	indicator(shape: JournalEntryShape) {
 		return <rect width={shape.props.w} height={shape.props.h} />
 	}
+
+    getContextMenuItems = (shape: JournalEntryShape) => {
+        return {
+            id: 'actor-context-menu',
+            type: 'group',
+            checkbox: false,
+            disabled: false,
+            readonlyOk: true,
+            children: [
+                {
+                    id: 'render-sheet',
+                    type: 'item',
+                    actionItem: {
+                        id: 'render-sheet',
+                        label: game.i18n.localize('DOCUMENT.JournalEntry'),
+                        readonlyOk: true,
+                        onSelect: async (...rest) => {
+                            const document = await fromUuid(shape.props.id);
+                            document.sheet.render(true);
+                        },
+                    },
+                    checked: true,
+                    readonlyOk: true,
+                    disabled: !shape?.props?.id,
+                },
+            ],
+        };
+    }
 }
 
 
