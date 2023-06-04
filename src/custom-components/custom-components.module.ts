@@ -2,6 +2,7 @@ import { debugService } from "../debug/debug.module";
 import { registerComponent } from "./custom-components.service";
 import { ActorShape, ActorTool } from "./foundry/actor";
 import { ItemShape } from "./foundry/item";
+import { JournalEntryShape, JournalEntryTool } from "./foundry/journal-entry";
 import { MacroShape, MacroTool } from "./foundry/macro";
 import { PlaylistShape, PlaylistTool } from "./foundry/playlist";
 import { PlaylistSoundShape, PlaylistSoundTool } from "./foundry/playlist-sound";
@@ -46,6 +47,11 @@ export default {
                 shape: ItemShape,
                 tool: ActorTool,
                 dataTransferType: 'Item',
+            })
+            registerComponent({
+                shape: JournalEntryShape,
+                tool: JournalEntryTool,
+                dataTransferType: 'JournalEntry',
             })
         },
     },
