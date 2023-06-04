@@ -94,8 +94,8 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
             {
                 id: shapeId,
                 type: shape.type,
-                x: originalEvent.x - 200,
-                y: originalEvent.y - 200,
+                x: originalEvent.x,
+                y: originalEvent.y,
                 props: {
                     id: data.uuid,
                     type: data.type,
