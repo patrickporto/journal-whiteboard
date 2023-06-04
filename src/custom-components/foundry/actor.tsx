@@ -78,6 +78,34 @@ export class ActorUtil extends TLBoxUtil<ActorShape> {
 	indicator(shape: ActorShape) {
 		return <rect width={shape.props.w} height={shape.props.h} />
 	}
+
+    getContextMenuItems = (shape: ActorShape) => {
+        return {
+            id: 'foundry-document-group',
+            type: 'group',
+            checkbox: false,
+            disabled: false,
+            readonlyOk: true,
+            children: [
+                {
+                    id: 'render-sheet',
+                    type: 'item',
+                    actionItem: {
+                        id: 'action.toggle-grid',
+                        label: game.i18n.localize('JW.OpenSheet'),
+                        readonlyOk: true,
+                        onSelect: async () => {
+                            const document = await fromUuid(shape.props.id);
+                            document.sheet.render(true);
+                        },
+                    },
+                    checked: true,
+                    readonlyOk: true,
+                    disabled: !shape?.props?.id,
+                },
+            ],
+        };
+    }
 }
 
 export class ActorTool extends TLBoxTool {
