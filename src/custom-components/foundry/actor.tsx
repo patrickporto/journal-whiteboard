@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { HTMLContainer, TLBaseShape, TLBoxTool, TLBoxUtil, TLOpacityType, defineShape } from "@tldraw/tldraw"
+import styled from 'styled-components'
 
 const DEFAULT_ACTOR_IMG = '/icons/svg/mystery-man.svg'
 
@@ -31,8 +32,8 @@ export class ActorUtil extends TLBoxUtil<ActorShape> {
 	override defaultProps(): ActorShape['props'] {
 		return {
 			opacity: '1',
-			w: 200,
-			h: 200,
+			w: 100,
+			h: 100,
             id: '',
 		}
 	}
@@ -69,7 +70,7 @@ export class ActorUtil extends TLBoxUtil<ActorShape> {
 					pointerEvents: 'all',
 				}}
 			>
-                <img src={actor.img} data-edit="img" alt={actor.name}></img>
+                <ActorImage src={actor.img} data-edit="img" alt={actor.name} />
 			</HTMLContainer>
 		)
 	}
@@ -107,6 +108,12 @@ export class ActorUtil extends TLBoxUtil<ActorShape> {
         };
     }
 }
+
+const ActorImage = styled.img<{playing: boolean}>`
+    width: 100px;
+    height: 100px;
+    border: none;
+`;
 
 export class ActorTool extends TLBoxTool {
 	static override id = 'actor'
