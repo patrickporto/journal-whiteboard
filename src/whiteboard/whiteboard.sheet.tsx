@@ -6,7 +6,7 @@ import { App, TLInstance, TLUser, TldrawEditorConfig } from '@tldraw/tldraw';
 import { debugService } from '../debug/debug.module';
 import { tldrawSettings } from '../tldraw/tldraw.module';
 import { JournalPageSheetReact } from '../foundry/journal-page.sheet';
-import { getShapeByDataTransferType, getShapes, getTools } from './whiteboard-components';
+import { getShapeByDataTransferType, getShapes, getTools } from '../custom-components/custom-components.service';
 
 export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
     snapshot: any = null;

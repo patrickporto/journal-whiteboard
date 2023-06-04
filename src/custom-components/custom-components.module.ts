@@ -1,5 +1,5 @@
 import { debugService } from "../debug/debug.module";
-import { registerComponent } from "../whiteboard/whiteboard-components";
+import { registerComponent } from "./custom-components.service";
 import { ActorShape, ActorTool } from "./foundry/actor";
 import { MacroShape, MacroTool } from "./foundry/macro";
 import { PlaylistShape, PlaylistTool } from "./foundry/playlist";
