@@ -28,3 +28,16 @@ declare const ui: any = {
 
 declare function fromUuid(uuid: string): Promise<any>;
 declare function fromUuidSync(uuid: string): any;
+
+declare const foundry = {
+    abstract: {
+        TypeDataModel: any
+    },
+    data: {
+        fields: any
+    }
+}
+
+declare const CONFIG = {
+    JournalEntryPage: any
+}

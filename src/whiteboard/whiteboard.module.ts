@@ -1,9 +1,14 @@
 import { debugService } from '../debug/debug.module';
+import { WhiteboardModel } from './whiteboard.datamodel';
 import { JournalWhiteboardPageSheet } from './whiteboard.sheet';
 
 export default {
     hooks: {
         async init() {
+            debugService.log('registering whiteboard data model');
+            Object.assign(CONFIG.JournalEntryPage.dataModels, {
+                "journal-whiteboard.whiteboard": WhiteboardModel,
+            });
             debugService.log('registering journal whiteboard type');
             DocumentSheetConfig.registerSheet(
                 JournalEntryPage,
