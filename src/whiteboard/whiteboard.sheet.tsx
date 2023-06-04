@@ -3,17 +3,10 @@ import { WhiteBoardPage } from './whiteboard-page';
 import './whiteboard.style.css';
 import { useSnapshot } from '../tldraw/store';
 import { App, TLInstance, TLUser, TldrawEditorConfig } from '@tldraw/tldraw';
-import { ActorShape, ActorTool } from './custom-components/actor';
 import { debugService } from '../debug/debug.module';
-import { DocumentShape, DocumentTool } from './custom-components/document';
 import { tldrawSettings } from '../tldraw/tldraw.module';
 import { JournalPageSheetReact } from '../foundry/journal-page.sheet';
-import { PlaylistSoundShape, PlaylistSoundTool } from './custom-components/playlist-sound';
-import { MacroShape, MacroTool } from './custom-components/macro';
-import { PlaylistShape, PlaylistTool } from './custom-components/playlist';
-
-const shapes = [ActorShape, PlaylistSoundShape, DocumentShape, MacroShape, PlaylistShape] as any;
-const tools = [ActorTool, PlaylistSoundTool, DocumentTool, MacroTool, PlaylistTool];
+import { getShapeByDataTransferType, getShapes, getTools } from './whiteboard-components';
 
 export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
     snapshot: any = null;
@@ -31,8 +24,8 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
 
     componentDidMount(sheet: any) {
         this.tldrawConfig = new TldrawEditorConfig({
-            shapes,
-            tools,
+            shapes: getShapes(),
+            tools: getTools(),
             allowUnknownShapes: true,
         });
         this.store = this.tldrawConfig.createStore({
@@ -90,86 +83,26 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
     }
 
     async _onDrop({ originalEvent }: any) {
-        const shapeId = this.tldrawApp.createShapeId();
-        this.createShapeFromDataTransfer(shapeId, originalEvent);
-        this.tldrawApp.setSelectedIds([shapeId])
-        this.tldrawApp.setSelectedTool('select.idle')
-    }
-
-    private createShapeFromDataTransfer(shapeId, originalEvent: any) {
         const data = JSON.parse(originalEvent.dataTransfer?.getData('text/plain') ?? '');
-        debugService.log('Dropping Foundry Document', data);
-        if (data.type === 'Actor') {
-            this.tldrawApp.createShapes([
-                {
-                    id: shapeId,
-                    type: 'actor',
-                    x: originalEvent.x - 200,
-                    y: originalEvent.y - 200,
-                    props: {
-                        id: data.uuid,
-                        type: data.type,
-                    },
-                },
-            ]);
-            return
+        const shape = getShapeByDataTransferType(data?.type);
+        debugService.log('Dropping Foundry Document', data, shape);
+        if (!shape) {
+            return;
         }
-        if (data.type === 'PlaylistSound') {
-            this.tldrawApp.createShapes([
-                {
-                    id: shapeId,
-                    type: 'playlist_sound',
-                    x: originalEvent.x - 200,
-                    y: originalEvent.y - 48,
-                    props: {
-                        id: data.uuid,
-                        type: data.type,
-                    },
-                },
-            ]);
-            return
-        }
-        if (data.type === 'Playlist') {
-            this.tldrawApp.createShapes([
-                {
-                    id: shapeId,
-                    type: 'playlist',
-                    x: originalEvent.x - 200,
-                    y: originalEvent.y - 48,
-                    props: {
-                        id: data.uuid,
-                        type: data.type,
-                    },
-                },
-            ]);
-            return
-        }
-        if (data.type === 'Macro') {
-            this.tldrawApp.createShapes([
-                {
-                    id: shapeId,
-                    type: 'macro',
-                    x: originalEvent.x - 200,
-                    y: originalEvent.y - 48,
-                    props: {
-                        id: data.uuid,
-                        type: data.type,
-                    },
-                },
-            ]);
-            return
-        }
+        const shapeId = this.tldrawApp.createShapeId();
         this.tldrawApp.createShapes([
             {
                 id: shapeId,
-                type: 'document',
+                type: shape.type,
                 x: originalEvent.x - 200,
-                y: originalEvent.y - 48,
+                y: originalEvent.y - 200,
                 props: {
                     id: data.uuid,
                     type: data.type,
                 },
             },
         ]);
+        this.tldrawApp.setSelectedIds([shapeId])
+        this.tldrawApp.setSelectedTool('select.idle')
     }
 }
