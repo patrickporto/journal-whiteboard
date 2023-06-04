@@ -54,7 +54,6 @@ export class MacroUtil extends TLBoxUtil<MacroShape> {
             async function getDocument() {
                 const document = await fromUuid(shape.props.id)
                 setDocument(document)
-
             }
             getDocument()
         }, [shape.props.id])
@@ -87,7 +86,7 @@ const MacroName = styled.div`
     white-space: nowrap;
 `;
 
-const MacroImage = styled.img<{playing: boolean}>`
+const MacroImage = styled.img`
     width: 36px;
     height: 36px;
     margin-left: 8px;

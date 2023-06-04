@@ -93,8 +93,8 @@ export class RolltableUtil extends TLBoxUtil<RolltableShape> {
                     id: 'render-sheet',
                     type: 'item',
                     actionItem: {
-                        id: 'action.toggle-grid',
-                        label: game.i18n.localize('JW.OpenSheet'),
+                        id: 'render-sheet',
+                        label: game.i18n.localize('Configure'),
                         readonlyOk: true,
                         onSelect: async () => {
                             const document = await fromUuid(shape.props.id);
@@ -117,7 +117,7 @@ const RolltableName = styled.div`
     white-space: nowrap;
 `;
 
-const RolltableImage = styled.img<{playing: boolean}>`
+const RolltableImage = styled.img`
     width: 36px;
     height: 36px;
     margin-left: 8px;

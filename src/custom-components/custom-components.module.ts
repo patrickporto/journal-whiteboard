@@ -5,6 +5,7 @@ import { MacroShape, MacroTool } from "./foundry/macro";
 import { PlaylistShape, PlaylistTool } from "./foundry/playlist";
 import { PlaylistSoundShape, PlaylistSoundTool } from "./foundry/playlist-sound";
 import { RolltableShape, RolltableTool } from "./foundry/rolltable";
+import { SceneShape, SceneTool } from "./foundry/scene";
 
 export default {
     hooks: {
@@ -34,6 +35,11 @@ export default {
                 shape: RolltableShape,
                 tool: RolltableTool,
                 dataTransferType: 'RollTable',
+            })
+            registerComponent({
+                shape: SceneShape,
+                tool: SceneTool,
+                dataTransferType: 'Scene',
             })
         },
     },

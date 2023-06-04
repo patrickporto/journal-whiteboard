@@ -92,10 +92,10 @@ export class ActorUtil extends TLBoxUtil<ActorShape> {
                     id: 'render-sheet',
                     type: 'item',
                     actionItem: {
-                        id: 'action.toggle-grid',
-                        label: game.i18n.localize('JW.OpenSheet'),
+                        id: 'render-sheet',
+                        label: game.i18n.localize('Sheet'),
                         readonlyOk: true,
-                        onSelect: async () => {
+                        onSelect: async (...rest) => {
                             const document = await fromUuid(shape.props.id);
                             document.sheet.render(true);
                         },
@@ -109,7 +109,7 @@ export class ActorUtil extends TLBoxUtil<ActorShape> {
     }
 }
 
-const ActorImage = styled.img<{playing: boolean}>`
+const ActorImage = styled.img`
     width: 100px;
     height: 100px;
     border: none;
