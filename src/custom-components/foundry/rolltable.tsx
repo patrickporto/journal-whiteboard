@@ -40,7 +40,6 @@ export class RolltableUtil extends TLBoxUtil<RolltableShape> {
 
     onClick = async (shape: RolltableShape) => {
         const document = await fromUuid(shape.props.id);
-        console.log(document)
         document?.draw()
     }
 
