@@ -60,7 +60,6 @@ export class ItemUtil extends TLBoxUtil<ItemShape> {
             }
             getDocument()
         }, [shape.props.id])
-        console.log(document)
 		return (
 			<HTMLContainer
 				id={shape.id}

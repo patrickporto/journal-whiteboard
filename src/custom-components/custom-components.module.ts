@@ -3,6 +3,7 @@ import { registerComponent } from "./custom-components.service";
 import { ActorShape, ActorTool } from "./foundry/actor";
 import { ItemShape } from "./foundry/item";
 import { JournalEntryShape, JournalEntryTool } from "./foundry/journal-entry";
+import { JournalEntryPageShape, JournalEntryPageTool } from "./foundry/journal-entry-page";
 import { MacroShape, MacroTool } from "./foundry/macro";
 import { PlaylistShape, PlaylistTool } from "./foundry/playlist";
 import { PlaylistSoundShape, PlaylistSoundTool } from "./foundry/playlist-sound";
@@ -52,6 +53,11 @@ export default {
                 shape: JournalEntryShape,
                 tool: JournalEntryTool,
                 dataTransferType: 'JournalEntry',
+            })
+            registerComponent({
+                shape: JournalEntryPageShape,
+                tool: JournalEntryPageTool,
+                dataTransferType: 'JournalEntryPage',
             })
         },
     },

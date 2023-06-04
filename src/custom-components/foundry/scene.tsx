@@ -65,7 +65,6 @@ export class SceneUtil extends TLBoxUtil<SceneShape> {
             getDocument();
         }, [shape.props.id]);
         const bounds = this.bounds(shape);
-        console.log('rendering scene', document);
         return (
             <HTMLContainer
                 id={shape.id}
