@@ -43,11 +43,6 @@ export class SceneUtil extends TLBoxUtil<SceneShape> {
         };
     }
 
-    onClick = async (shape: SceneShape) => {
-        const document = await fromUuid(shape.props.id);
-        document.view()
-    };
-
     // Render method — the React component that will be rendered for the shape
     render(shape: SceneShape) {
         const [document, setDocument] = useState<{
@@ -94,7 +89,7 @@ export class SceneUtil extends TLBoxUtil<SceneShape> {
         return <rect width={shape.props.w} height={shape.props.h} />;
     }
 
-    getContextMenuItems = (shape: ActorShape) => {
+    getContextMenuItems = (shape: SceneShape) => {
         return {
             id: 'rolltable-context-menu',
             type: 'group',
@@ -112,6 +107,22 @@ export class SceneUtil extends TLBoxUtil<SceneShape> {
                         onSelect: async () => {
                             const document = await fromUuid(shape.props.id);
                             document.activate()
+                        },
+                    },
+                    checked: true,
+                    readonlyOk: true,
+                    disabled: !shape?.props?.id,
+                },
+                {
+                    id: 'scene-view',
+                    type: 'item',
+                    actionItem: {
+                        id: 'scene-view',
+                        label: game.i18n.localize('SCENES.View'),
+                        readonlyOk: true,
+                        onSelect: async () => {
+                            const document = await fromUuid(shape.props.id);
+                            document.view()
                         },
                     },
                     checked: true,

@@ -38,11 +38,6 @@ export class RolltableUtil extends TLBoxUtil<RolltableShape> {
 		}
 	}
 
-    onClick = async (shape: RolltableShape) => {
-        const document = await fromUuid(shape.props.id);
-        document?.draw()
-    }
-
 	// Render method — the React component that will be rendered for the shape
 	render(shape: RolltableShape) {
         const [document, setDocument] = useState<{
@@ -81,7 +76,7 @@ export class RolltableUtil extends TLBoxUtil<RolltableShape> {
 		return <rect width={shape.props.w} height={shape.props.h} />
 	}
 
-    getContextMenuItems = (shape: ActorShape) => {
+    getContextMenuItems = (shape: RolltableShape) => {
         return {
             id: 'rolltable-context-menu',
             type: 'group',
@@ -89,6 +84,22 @@ export class RolltableUtil extends TLBoxUtil<RolltableShape> {
             disabled: false,
             readonlyOk: true,
             children: [
+                {
+                    id: 'draw',
+                    type: 'item',
+                    actionItem: {
+                        id: 'draw',
+                        label: game.i18n.localize('Roll'),
+                        readonlyOk: true,
+                        onSelect: async () => {
+                            const document = await fromUuid(shape.props.id);
+                            document?.draw()
+                        },
+                    },
+                    checked: true,
+                    readonlyOk: true,
+                    disabled: !shape?.props?.id,
+                },
                 {
                     id: 'render-sheet',
                     type: 'item',

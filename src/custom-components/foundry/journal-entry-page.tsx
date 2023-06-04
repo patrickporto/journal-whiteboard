@@ -44,11 +44,6 @@ export class JournalEntryPageUtil extends TLBoxUtil<JournalEntryPageShape> {
         };
     }
 
-    onClick = async (shape: JournalEntryPageShape) => {
-        const document = await fromUuid(shape.props.id);
-        document?.sheet?.render(true);
-    };
-
     // Render method — the React component that will be rendered for the shape
     render(shape: JournalEntryPageShape) {
         const contentRef = React.useRef<HTMLDivElement>(null);
@@ -107,7 +102,7 @@ export class JournalEntryPageUtil extends TLBoxUtil<JournalEntryPageShape> {
 
     getContextMenuItems = (shape: JournalEntryPageShape) => {
         return {
-            id: 'actor-context-menu',
+            id: 'journal-entry-page-context-menu',
             type: 'group',
             checkbox: false,
             disabled: false,

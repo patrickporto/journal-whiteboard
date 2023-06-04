@@ -44,16 +44,6 @@ export class PlaylistUtil extends TLBoxUtil<PlaylistShape> {
         };
     }
 
-    onClick = async (shape: PlaylistShape) => {
-        const document = await fromUuid(shape.props.id);
-        if (document.playing) {
-            document.stopAll()
-        }
-        else {
-            document.playAll()
-        }
-    }
-
     // Render method — the React component that will be rendered for the shape
     render(shape: PlaylistShape) {
         const [document, setDocument] = useState<{
@@ -108,6 +98,73 @@ export class PlaylistUtil extends TLBoxUtil<PlaylistShape> {
     indicator(shape: PlaylistShape) {
         return <rect width={shape.props.w} height={shape.props.h} />;
     }
+
+    getContextMenuItems = (shape: PlaylistShape) => {
+        const document = fromUuidSync(shape.props.id);
+        const soundContextMenuItems = [
+            {
+                id: 'render-sheet',
+                type: 'item',
+                actionItem: {
+                    id: 'render-sheet',
+                    label: game.i18n.localize('Configure'),
+                    readonlyOk: true,
+                    onSelect: async () => {
+                        const document = await fromUuid(shape.props.id);
+                        document.sheet.render(true);
+                    },
+                },
+                checked: true,
+                readonlyOk: true,
+                disabled: !shape?.props?.id,
+            },
+        ];
+        if (document.playing) {
+            soundContextMenuItems.unshift(
+                {
+                    id: 'playlist-stop',
+                    type: 'item',
+                    actionItem: {
+                        id: 'playlist-stop',
+                        label: game.i18n.localize('PLAYLIST.SoundStop'),
+                        readonlyOk: true,
+                        onSelect: async () => {
+                            document.stopAll()
+                        },
+                    },
+                    checked: true,
+                    readonlyOk: true,
+                    disabled: false,
+                }
+            );
+        } else {
+            soundContextMenuItems.unshift(
+                {
+                    id: 'playlist-play',
+                    type: 'item',
+                    actionItem: {
+                        id: 'playlist-play',
+                        label: game.i18n.localize('PLAYLIST.SoundPlay'),
+                        readonlyOk: true,
+                        onSelect: async () => {
+                            document.playAll()
+                        },
+                    },
+                    checked: true,
+                    readonlyOk: true,
+                    disabled: false,
+                }
+            )
+        }
+        return {
+            id: 'playlist-context-menu',
+            type: 'group',
+            checkbox: false,
+            disabled: false,
+            readonlyOk: true,
+            children: soundContextMenuItems,
+        };
+    };
 }
 
 const PlaylistSoundName = styled.div`

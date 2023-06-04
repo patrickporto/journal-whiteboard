@@ -27,3 +27,4 @@ declare const ui: any = {
 }
 
 declare function fromUuid(uuid: string): Promise<any>;
+declare function fromUuidSync(uuid: string): any;

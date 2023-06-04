@@ -38,11 +38,6 @@ export class ItemUtil extends TLBoxUtil<ItemShape> {
 		}
 	}
 
-    onClick = async (shape: ItemShape) => {
-        const document = await fromUuid(shape.props.id);
-        document?.sheet?.render(true)
-    }
-
 	// Render method — the React component that will be rendered for the shape
 	render(shape: ItemShape) {
         const [document, setDocument] = useState<{
@@ -83,7 +78,7 @@ export class ItemUtil extends TLBoxUtil<ItemShape> {
 
     getContextMenuItems = (shape: ActorShape) => {
         return {
-            id: 'rolltable-context-menu',
+            id: 'item-context-menu',
             type: 'group',
             checkbox: false,
             disabled: false,

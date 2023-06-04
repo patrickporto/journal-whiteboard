@@ -24,7 +24,6 @@ export const PlaylistSoundShape = defineShape<PlaylistSoundShape>({
     getShapeUtil: () => PlaylistSoundUtil,
 });
 
-
 export class PlaylistSoundUtil extends TLBoxUtil<PlaylistSoundShape> {
     static type = 'playlist_sound';
 
@@ -45,12 +44,11 @@ export class PlaylistSoundUtil extends TLBoxUtil<PlaylistSoundShape> {
     onClick = async (shape: PlaylistSoundShape) => {
         const document = await fromUuid(shape.props.id);
         if (document.sound.playing) {
-            document.parent.stopSound(document)
+            document.parent.stopSound(document);
+        } else {
+            document.parent.playSound(document);
         }
-        else {
-            document.parent.playSound(document)
-        }
-    }
+    };
 
     // Render method — the React component that will be rendered for the shape
     render(shape: PlaylistSoundShape) {
@@ -68,10 +66,10 @@ export class PlaylistSoundUtil extends TLBoxUtil<PlaylistSoundShape> {
                 const document = await fromUuid(shape.props.id);
                 setDocument(document);
                 document.sound.on('start', async () => {
-                    setDocument(prev => ({...prev, playing: true}));
+                    setDocument(prev => ({ ...prev, playing: true }));
                 });
                 document.sound.on('stop', async () => {
-                    setDocument(prev => ({...prev, playing: false}))
+                    setDocument(prev => ({ ...prev, playing: false }));
                 });
             }
             getDocument();
@@ -102,6 +100,88 @@ export class PlaylistSoundUtil extends TLBoxUtil<PlaylistSoundShape> {
     indicator(shape: PlaylistSoundShape) {
         return <rect width={shape.props.w} height={shape.props.h} />;
     }
+
+    getContextMenuItems = (shape: PlaylistSoundShape) => {
+        const document = fromUuidSync(shape.props.id);
+        const soundContextMenuItems = [
+            {
+                id: 'render-sheet',
+                type: 'item',
+                actionItem: {
+                    id: 'render-sheet',
+                    label: game.i18n.localize('Configure'),
+                    readonlyOk: true,
+                    onSelect: async () => {
+                        const document = await fromUuid(shape.props.id);
+                        document.sheet.render(true);
+                    },
+                },
+                checked: true,
+                readonlyOk: true,
+                disabled: !shape?.props?.id,
+            },
+        ];
+        if (document.sound.playing) {
+            soundContextMenuItems.unshift(
+                {
+                    id: 'playlist-sound-stop',
+                    type: 'item',
+                    actionItem: {
+                        id: 'playlist-sound-stop',
+                        label: game.i18n.localize('PLAYLIST.SoundStop'),
+                        readonlyOk: true,
+                        onSelect: async () => {
+                            document.parent.stopSound(document);
+                        },
+                    },
+                    checked: true,
+                    readonlyOk: true,
+                    disabled: false,
+                },
+                {
+                    id: 'playlist-sound-pause',
+                    type: 'item',
+                    actionItem: {
+                        id: 'playlist-sound-pause',
+                        label: game.i18n.localize('PLAYLIST.SoundPause'),
+                        readonlyOk: true,
+                        onSelect: async () => {
+                            document.update({playing: false, pausedTime: document.sound.currentTime});
+                        },
+                    },
+                    checked: true,
+                    readonlyOk: true,
+                    disabled: false,
+                },
+            );
+        } else {
+            soundContextMenuItems.unshift(
+                {
+                    id: 'playlist-sound-play',
+                    type: 'item',
+                    actionItem: {
+                        id: 'playlist-sound-play',
+                        label: game.i18n.localize('PLAYLIST.SoundPlay'),
+                        readonlyOk: true,
+                        onSelect: async () => {
+                            document.parent.playSound(document);
+                        },
+                    },
+                    checked: true,
+                    readonlyOk: true,
+                    disabled: false,
+                }
+            )
+        }
+        return {
+            id: 'playlist-sound-context-menu',
+            type: 'group',
+            checkbox: false,
+            disabled: false,
+            readonlyOk: true,
+            children: soundContextMenuItems,
+        };
+    };
 }
 
 const PlaylistSoundName = styled.div`
@@ -110,7 +190,7 @@ const PlaylistSoundName = styled.div`
     white-space: nowrap;
 `;
 
-const PlaylistSoundIcon = styled.div<{playing: boolean}>`
+const PlaylistSoundIcon = styled.div<{ playing: boolean }>`
     font-size: 24px;
     padding: 8px;
     padding-left: 16px;

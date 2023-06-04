@@ -36,11 +36,6 @@ export class JournalEntryUtil extends TLBoxUtil<JournalEntryShape> {
 		}
 	}
 
-    onClick = async (shape: JournalEntryShape) => {
-        const document = await fromUuid(shape.props.id);
-        document?.sheet?.render()
-    }
-
 	// Render method — the React component that will be rendered for the shape
 	render(shape: JournalEntryShape) {
         const [document, setDocument] = useState<{
@@ -78,7 +73,7 @@ export class JournalEntryUtil extends TLBoxUtil<JournalEntryShape> {
 
     getContextMenuItems = (shape: JournalEntryShape) => {
         return {
-            id: 'actor-context-menu',
+            id: 'journal-entry-context-menu',
             type: 'group',
             checkbox: false,
             disabled: false,
