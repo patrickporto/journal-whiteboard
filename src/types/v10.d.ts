@@ -2,6 +2,7 @@ declare class JournalPageSheet {
     static get defaultOptions(): any;
     async _renderInner(...args: any): Promise<any>;
     async close(...args: any): Promise<any>;
+    activateListeners(html: JQuery): void;
 }
 
 declare class JournalEntryPage {

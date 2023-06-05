@@ -106,7 +106,7 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
         });
     }
 
-    renderReact({ sheet }: any) {
+    reactComponent({ sheet }: any) {
         return (
             <WhiteboardPage
                 sheet={sheet}

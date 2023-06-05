@@ -31,15 +31,16 @@ export abstract class JournalPageSheetReact extends JournalPageSheet {
     }
 
     createReactRoot(sheet: any) {
-        if (!this.root) {
-            this.root = ReactDOM.createRoot(this.form);
+        if (this.root) {
+            return
         }
-        this.root.render(this.renderReact({sheet}));
+        this.root = ReactDOM.createRoot(this.form);
+        this.root.render(this.reactComponent({sheet}));
     }
 
     abstract componentDidMount(sheet): void;
 
-    abstract renderReact(props: {
+    abstract reactComponent(props: {
         sheet: any
     }): ReactElement;
 
@@ -48,4 +49,18 @@ export abstract class JournalPageSheetReact extends JournalPageSheet {
         this.root = null;
         return await super.close();
     }
+
+    deactivateListeners(html: JQuery) {
+        html.find('img[data-edit]').off('click');
+        html.find('input,select,textarea').off('change');
+        html.find('button.file-picker').off('click');
+    }
+
+    override activateListeners(html: JQuery) {
+        this.deactivateListeners(html);
+
+        super.activateListeners(html);
+    }
+    _activateEditor(_: JQuery | HTMLElement) {}
+    async saveEditor(name: string, _: { remove?: boolean } = {}) {}
 }
