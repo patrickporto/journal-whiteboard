@@ -20,7 +20,7 @@ export default {
         socketlib() {
             collaborativeStoreSocket = socketlib.registerModule(CANNONICAL_NAME);
             collaborativeStore = new CollaborativeStore();
-            collaborativeStore.registerSocket(collaborativeStoreSocket);
+            collaborativeStore.activateSocketListeners(collaborativeStoreSocket);
         }
     }
 };

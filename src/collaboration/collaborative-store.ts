@@ -1,4 +1,4 @@
-import { TLInstance, TLInstanceId, TLInstancePageState, TLStore, TLUser, TLUserId, TLUserPresence } from "@tldraw/tldraw";
+import { TLInstanceId, TLStore, TLUserId } from "@tldraw/tldraw";
 import { SerializedSchema, compareSchemas } from "@tldraw/tlstore";
 import { debugService } from "../debug/debug.module";
 
@@ -12,7 +12,7 @@ type Diff = {
 export class CollaborativeStore {
     stores: Map<TLInstanceId, TLStore> = new Map();
 
-    registerSocket(socket: SocketModule) {
+    activateSocketListeners(socket: SocketModule) {
         socket.register('handleEvents', this.handleEvents.bind(this));
     }
 

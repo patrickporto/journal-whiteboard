@@ -20,22 +20,7 @@ import {
     getShapes,
     getTools,
 } from '../custom-components/custom-components.service';
-import { CANNONICAL_NAME } from '../constants';
-import { compareSchemas, SerializedSchema } from '@tldraw/tlstore'
 import { collaborativeStore, collaborativeStoreSocket } from '../collaboration/collaboration.module';
-
-type Connect = {
-    instance: TLInstance,
-    user: TLUser,
-    userPresence: TLUserPresence
-    instancePageState: TLInstancePageState
-};
-type Diff = {
-    instanceId: TLInstanceId ,
-    changes: any,
-    schema: SerializedSchema,
-    userId: TLUserId,
-}
 
 export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
     snapshot: any = null;
