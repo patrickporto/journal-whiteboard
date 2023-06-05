@@ -39,7 +39,7 @@ export abstract class JournalPageSheetReact extends JournalPageSheet {
     abstract componentDidMount(sheet): void;
 
     abstract renderReact(props: {
-        sheet: any;
+        sheet: any
     }): ReactElement;
 
     async close() {

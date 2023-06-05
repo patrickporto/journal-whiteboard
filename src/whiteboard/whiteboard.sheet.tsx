@@ -1,5 +1,5 @@
 import React from 'react';
-import { WhiteBoardPage } from './whiteboard-page';
+import { WhiteboardPage } from './whiteboard-page';
 import './whiteboard.style.css';
 import { useSnapshot } from '../tldraw/store';
 import {
@@ -39,7 +39,7 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
         return foundry.utils.mergeObject(super.defaultOptions, {
             width: 960,
             height: 800,
-            classes: ['whiteboard'],
+            classes: ['sheet', 'journal-entry-page', 'journal-sheet', 'whiteboard'],
         });
     }
 
@@ -104,7 +104,7 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
 
     renderReact({ sheet }: any) {
         return (
-            <WhiteBoardPage
+            <WhiteboardPage
                 sheet={sheet}
                 store={this.store}
                 config={this.tldrawConfig}
