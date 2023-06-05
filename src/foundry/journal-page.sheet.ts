@@ -6,6 +6,7 @@ export abstract class JournalPageSheetReact extends JournalPageSheet {
     object: any;
     form: HTMLFormElement;
     isEditable: boolean;
+    rendered: boolean;
 
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {

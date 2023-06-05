@@ -1,6 +1,6 @@
 declare class SocketModule {
     register(name, func): void
-    executeForOthers(name, ...args): void
+    executeForOthers(name, ...args): Promise<any>
 }
 
 declare class SocketLib {

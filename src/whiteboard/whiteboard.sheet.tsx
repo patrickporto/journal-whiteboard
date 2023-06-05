@@ -1,12 +1,13 @@
 import React from 'react';
 import { WhiteboardPage } from './whiteboard-page';
 import './whiteboard.style.css';
-import { useSnapshot } from '../tldraw/store';
 import {
     App,
     TLInstance,
     TLInstanceId,
     TLInstancePageState,
+    TLPage,
+    TLPageId,
     TLUser,
     TLUserId,
     TLUserPresence,
@@ -23,7 +24,6 @@ import {
 import { collaborativeStore, collaborativeStoreSocket } from '../collaboration/collaboration.module';
 
 export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
-    snapshot: any = null;
     store: any;
     tldrawApp: App;
     tldrawConfig: TldrawEditorConfig;
@@ -33,6 +33,8 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
     instanceId: TLInstanceId;
     instance: TLInstance;
     instancePageState: TLInstancePageState
+    pageId: TLPageId
+    page: TLPage
     removeStoreListener: any;
 
     static get defaultOptions() {
@@ -56,25 +58,28 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
             name: game.user.name,
         });
         this.instanceId = TLInstance.createCustomId(this.object.id)
+        this.pageId = TLPage.createCustomId(this.object.id)
+        this.page = TLPage.create({ id: this.pageId, name: sheet.title, index: 'a0' })
         this.store = this.tldrawConfig.createStore({
-            initialData: {},
+            initialData: {
+                [this.pageId]: this.page
+            },
             userId: this.userId,
             instanceId: this.instanceId,
         })
-        this.snapshot = useSnapshot(this.store);
+        collaborativeStore.registerStore(this.instanceId, this.store)
         if (this.isEditable) {
             $(this.form).on('drop', this._onDrop.bind(this));
         }
         const whiteboard = this.object.system?.whiteboard;
         if (whiteboard) {
-            this.snapshot.loadSnapshot(whiteboard);
+            collaborativeStore.restoreSnapshot(this.instanceId, whiteboard);
         }
     }
 
-    handleMount = (app: App) => {
+    handleMount = async (app: App) => {
         this.tldrawApp = app;
         debugService.log('Tldraw App', app);
-        this.enableCollaborativeEditing(app);
         if (tldrawSettings.theme === 'dark') {
             this.tldrawApp.setDarkMode(true);
         } else {
@@ -83,22 +88,21 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
         if (!this.isEditable) {
             this.tldrawApp.enableReadOnlyMode();
         }
+        app.updateUserPresence({color: game.user.color})
+        console.log('sheet', this)
+        await this.enableCollaborativeEditing(app);
     };
 
-    enableCollaborativeEditing(app: App) {
-        if (!collaborativeStore) {
+    async enableCollaborativeEditing(app: App) {
+        if (!collaborativeStore || !this.rendered) {
             return
         }
-        collaborativeStore.registerStore(this.instanceId, this.store);
-        debugService.info('Collaborative editing is enabled.');
-        app.updateUserPresence({color: game.user.color})
+
+        debugService.log('Collaborative editing is enabled.');
+        await collaborativeStore.restoreFromRemote(this.instanceId)
+        debugService.log('Listening for remote changes.');
         this.removeStoreListener = app.store.listen(entry => {
-            collaborativeStoreSocket.executeForOthers('handleEvents', {
-                instanceId: this.instanceId,
-                changes: entry.changes,
-                schema: app.store.schema.serialize(),
-                userId: this.userId,
-            });
+            collaborativeStore.put(this.instanceId, entry.changes, entry.source)
         });
     }
 
@@ -116,7 +120,7 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
     }
 
     async saveSnapshot() {
-        const snapshot = this.snapshot.getSnapshot();
+        const snapshot = collaborativeStore.getSnapshot(this.instanceId);
         await this.object.update(
             { ['system.whiteboard']: snapshot },
             { diff: false, recursive: true },
