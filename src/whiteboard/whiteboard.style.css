@@ -7,11 +7,11 @@
     z-index: 300;
 }
 
-.window-app.whiteboard .window-resizable-handle {
+.journal-whiteboard\.whiteboard .window-resizable-handle {
     z-index: 200;
 }
 
-.window-app.whiteboard .window-content {
+.journal-whiteboard\.whiteboard .window-content {
     padding: 0;
 }
 
@@ -22,7 +22,7 @@
     display: none;
 }
 
-.whiteboard button:hover, button:focus {
+.journal-whiteboard\.whiteboard button:hover, button:focus {
     box-shadow: none;
 }
 

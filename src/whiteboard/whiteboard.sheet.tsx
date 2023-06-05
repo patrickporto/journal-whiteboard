@@ -41,7 +41,7 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
         return foundry.utils.mergeObject(super.defaultOptions, {
             width: 960,
             height: 800,
-            classes: ['sheet', 'journal-entry-page', 'journal-sheet', 'whiteboard'],
+            classes: ['sheet', 'journal-entry-page', 'journal-sheet', 'journal-whiteboard.whiteboard'],
         });
     }
 
