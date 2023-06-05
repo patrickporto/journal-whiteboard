@@ -25,5 +25,18 @@
         "JournalEntryPage": {
             "whiteboard": {}
         }
+    },
+    "socket": true,
+    "relationships": {
+        "requires": [
+            {
+                "id": "socketlib",
+                "type": "module",
+                "manifest": "https://raw.githubusercontent.com/manuelVo/foundryvtt-socketlib/v1.0.13/module.json",
+                "compatibility": {
+                    "verified": "1.0.13"
+                }
+            }
+        ]
     }
 }

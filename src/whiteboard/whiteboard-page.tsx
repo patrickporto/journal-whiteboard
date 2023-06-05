@@ -3,7 +3,9 @@ import {
     App,
     Canvas,
     ContextMenu,
+    TLInstanceId,
     TLStore,
+    TLUserId,
     TldrawEditor,
     TldrawEditorConfig,
     TldrawUi,
@@ -17,15 +19,17 @@ type WhiteBoardPageProps = {
     sheet: any;
     store: TLStore;
     config: TldrawEditorConfig;
+    userId: TLUserId
+    instanceId: TLInstanceId
     onMount: (app: App) => void;
 };
 
 const editorAssetUrls = getEditorAssetUrls();
 const uiAssetUrls = getUiAssetUrls();
 
-export const WhiteBoardPage = ({ sheet, store, config, onMount }: WhiteBoardPageProps) => {
+export const WhiteBoardPage = ({ sheet, store, config, onMount, userId, instanceId }: WhiteBoardPageProps) => {
     return (
-        <TldrawEditor assetUrls={editorAssetUrls} config={config} store={store} onMount={onMount}>
+        <TldrawEditor assetUrls={editorAssetUrls} config={config} store={store} onMount={onMount} userId={userId} instanceId={instanceId}>
             <TldrawUi assetUrls={uiAssetUrls} overrides={menuOverrides}>
                 <ContextMenu>
                     <Canvas />

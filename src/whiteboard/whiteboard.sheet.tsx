@@ -2,17 +2,53 @@ import React from 'react';
 import { WhiteBoardPage } from './whiteboard-page';
 import './whiteboard.style.css';
 import { useSnapshot } from '../tldraw/store';
-import { App, TLInstance, TLUser, TldrawEditorConfig } from '@tldraw/tldraw';
+import {
+    App,
+    TLInstance,
+    TLInstanceId,
+    TLInstancePageState,
+    TLUser,
+    TLUserId,
+    TLUserPresence,
+    TldrawEditorConfig,
+} from '@tldraw/tldraw';
 import { debugService } from '../debug/debug.module';
 import { tldrawSettings } from '../tldraw/tldraw.module';
 import { JournalPageSheetReact } from '../foundry/journal-page.sheet';
-import { getShapeByDataTransferType, getShapes, getTools } from '../custom-components/custom-components.service';
+import {
+    getShapeByDataTransferType,
+    getShapes,
+    getTools,
+} from '../custom-components/custom-components.service';
+import { CANNONICAL_NAME } from '../constants';
+import { compareSchemas, SerializedSchema } from '@tldraw/tlstore'
+import { collaborativeStore, collaborativeStoreSocket } from '../collaboration/collaboration.module';
+
+type Connect = {
+    instance: TLInstance,
+    user: TLUser,
+    userPresence: TLUserPresence
+    instancePageState: TLInstancePageState
+};
+type Diff = {
+    instanceId: TLInstanceId ,
+    changes: any,
+    schema: SerializedSchema,
+    userId: TLUserId,
+}
 
 export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
     snapshot: any = null;
     store: any;
     tldrawApp: App;
     tldrawConfig: TldrawEditorConfig;
+    userId: TLUserId;
+    user: TLUser;
+    userPresence: TLUserPresence
+    instanceId: TLInstanceId;
+    instance: TLInstance;
+    instancePageState: TLInstancePageState
+    removeStoreListener: any;
 
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
@@ -28,24 +64,32 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
             tools: getTools(),
             allowUnknownShapes: true,
         });
+
+        this.userId = TLUser.createCustomId(game.user.id);
+        this.user = TLUser.create({
+            id: this.userId,
+            name: game.user.name,
+        });
+        this.instanceId = TLInstance.createCustomId(this.object.id)
         this.store = this.tldrawConfig.createStore({
             initialData: {},
-            userId: TLUser.createCustomId(game.user.id),
-            instanceId: TLInstance.createCustomId(this.object.id),
-        });
+            userId: this.userId,
+            instanceId: this.instanceId,
+        })
         this.snapshot = useSnapshot(this.store);
-        const whiteboard = sheet.data.system?.whiteboard;
-        if (whiteboard) {
-            this.snapshot.loadSnapshot(JSON.parse(whiteboard));
-        }
         if (this.isEditable) {
             $(this.form).on('drop', this._onDrop.bind(this));
+        }
+        const whiteboard = this.object.system?.whiteboard;
+        if (whiteboard) {
+            this.snapshot.loadSnapshot(whiteboard);
         }
     }
 
     handleMount = (app: App) => {
         this.tldrawApp = app;
         debugService.log('Tldraw App', app);
+        this.enableCollaborativeEditing(app);
         if (tldrawSettings.theme === 'dark') {
             this.tldrawApp.setDarkMode(true);
         } else {
@@ -56,6 +100,23 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
         }
     };
 
+    enableCollaborativeEditing(app: App) {
+        if (!collaborativeStore) {
+            return
+        }
+        collaborativeStore.registerStore(this.instanceId, this.store);
+        debugService.info('Collaborative editing is enabled.');
+        app.updateUserPresence({color: game.user.color})
+        this.removeStoreListener = app.store.listen(entry => {
+            collaborativeStoreSocket.executeForOthers('handleEvents', {
+                instanceId: this.instanceId,
+                changes: entry.changes,
+                schema: app.store.schema.serialize(),
+                userId: this.userId,
+            });
+        });
+    }
+
     renderReact({ sheet }: any) {
         return (
             <WhiteBoardPage
@@ -63,6 +124,8 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
                 store={this.store}
                 config={this.tldrawConfig}
                 onMount={this.handleMount}
+                userId={this.userId}
+                instanceId={this.instanceId}
             />
         );
     }
@@ -70,7 +133,7 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
     async saveSnapshot() {
         const snapshot = this.snapshot.getSnapshot();
         await this.object.update(
-            { ['system.whiteboard']: JSON.stringify(snapshot) },
+            { ['system.whiteboard']: snapshot },
             { diff: false, recursive: true },
         );
     }
@@ -79,6 +142,7 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
         if (this.isEditable) {
             await this.saveSnapshot();
         }
+        this?.removeStoreListener();
         return await super.close();
     }
 
@@ -102,7 +166,7 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
                 },
             },
         ]);
-        this.tldrawApp.setSelectedIds([shapeId])
-        this.tldrawApp.setSelectedTool('select.idle')
+        this.tldrawApp.setSelectedIds([shapeId]);
+        this.tldrawApp.setSelectedTool('select.idle');
     }
 }

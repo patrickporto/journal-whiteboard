@@ -11,9 +11,12 @@ declare class DocumentSheetConfig {
     static registerSheet(a: JournalEntryPage, b: string, c: JournalPageSheet, d: { types: string[], makeDefault: boolean, label: string }): void;
 }
 
-declare const Hooks = {
+declare class HooksType {
     on(event: string, callback: (...args: any) => void): void;
+    once(event: string, callback: (...args: any) => void): void;
 }
+
+declare const Hooks: HooksType
 
 declare const game: any = {
 }
