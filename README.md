@@ -10,7 +10,11 @@ With the Journal Whiteboard module in Foundry VTT, you can easily create a free-
 
 ## Screenshots
 
-> TODO
+!["New Journal Entry Page Type"](./docs/new-journal-entry-page-type.png)
+
+![Intrigue Map](./docs/intrigue-map.png)
+
+![Foundry Document](./docs/foundry-document.png)
 
 ## Installation
 
