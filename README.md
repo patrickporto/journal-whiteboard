@@ -30,6 +30,8 @@ https://github.com/patrickporto/journal-whiteboard/releases/latest/download/modu
 | [GM Screen](https://foundryvtt.com/packages/gm-screen) | ✔️ | Works as expected |
 | [Monk's Enhanced Journal](https://foundryvtt.com/packages/monks-enhanced-journal) | - | Unknown |
 
-## Known Issues
+## License
 
-- The whiteboard crashes on click in empty areas of the canvas. This is a known issue and will be fixed in a future release.
+This Foundry VTT module, written by Patrick Porto, is licensed under a [MIT License](./LICENSE).
+This work is licensed under [Foundry Virtual Tabletop EULA - Limited License Agreement for module development](https://foundryvtt.com/article/license/).
+This module is powered by [tldraw](https://github.com/tldraw/tldraw) which is licensed under [Apache License](https://github.com/tldraw/tldraw/blob/main/LICENSE).
