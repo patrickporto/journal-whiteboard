@@ -169,6 +169,7 @@ const SceneThumb = styled.div<{ backgroundImage: boolean }>`
     background-repeat: no-repeat;
     width: 100%;
     height: 100%;
+    color: var(--color-text-light-highlight);
 `;
 
 

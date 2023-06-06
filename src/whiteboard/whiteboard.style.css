@@ -26,3 +26,6 @@
     box-shadow: none;
 }
 
+.journal-whiteboard\.whiteboard button {
+    width: unset;
+}
