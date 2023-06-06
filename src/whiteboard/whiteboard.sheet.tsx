@@ -79,7 +79,6 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
 
     handleMount = async (app: App) => {
         this.tldrawApp = app;
-        debugService.log('Tldraw App', app);
         if (tldrawSettings.theme === 'dark') {
             this.tldrawApp.setDarkMode(true);
         } else {
@@ -89,7 +88,6 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
             this.tldrawApp.enableReadOnlyMode();
         }
         app.updateUserPresence({color: game.user.color})
-        console.log('sheet', this)
         await this.enableCollaborativeEditing(app);
     };
 

@@ -18,7 +18,6 @@ import styled from 'styled-components';
 import { useDocumentSheet } from '../foundry/document-sheet.context';
 
 type WhiteBoardPageProps = {
-    sheet: any;
     store: TLStore;
     config: TldrawEditorConfig;
     userId: TLUserId;
