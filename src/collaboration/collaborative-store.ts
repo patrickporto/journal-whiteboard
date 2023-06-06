@@ -21,7 +21,7 @@ export class CollaborativeStore {
 
     activateSocketListeners(socket: SocketModule) {
         this.socket = socket;
-        this.socket.register('tldraw.getSnapshot', this.connect.bind(this));
+        this.socket.register('tldraw.getSnapshot', this.getSnapshot.bind(this));
         this.socket.register('tldraw.events', this.handleEvents.bind(this));
     }
 
@@ -35,16 +35,6 @@ export class CollaborativeStore {
             throw new Error(`No store found for instance ${instanceId}`);
         }
         return store;
-    }
-
-    connect(instanceId: TLInstanceId) {
-        debugService.log('Connected to collaborative store');
-        const store = this.stores.get(instanceId);
-        if (!store) {
-            return null;
-        }
-        const snapshot = useSnapshot(store)
-        return snapshot.getSnapshot()
     }
 
     handleEvents(diff: Diff) {
