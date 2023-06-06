@@ -38,7 +38,6 @@ export const WhiteboardPage = ({
 }: WhiteBoardPageProps) => {
     const { sheet, update } = useDocumentSheet()
     const [showTitle, setShowTitle] = React.useState(sheet?.data?.title?.show);
-    console.log('sheet', sheet)
     return (
         <Whiteboard className={sheet.cssClass}>
             {sheet?.editable && (
