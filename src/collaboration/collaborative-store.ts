@@ -1,7 +1,6 @@
 import { TLInstanceId, TLRecord, TLStore } from "@tldraw/tldraw";
 import { RecordsDiff, SerializedSchema, StoreSnapshot, compareSchemas } from "@tldraw/tlstore";
 import { debugService } from "../debug/debug.module";
-import { useSnapshot } from "../tldraw/store";
 
 type Diff = {
     instanceId: TLInstanceId ,
