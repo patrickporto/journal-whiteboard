@@ -21,7 +21,7 @@ import {
     getShapes,
     getTools,
 } from '../custom-components/custom-components.service';
-import { collaborativeStore, collaborativeStoreSocket } from '../collaboration/collaboration.module';
+import { collaborativeStore } from '../collaboration/collaboration.module';
 
 export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
     store: any;
@@ -106,10 +106,9 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
         });
     }
 
-    reactComponent({ sheet }: any) {
+    reactComponent() {
         return (
             <WhiteboardPage
-                sheet={sheet}
                 store={this.store}
                 config={this.tldrawConfig}
                 onMount={this.handleMount}

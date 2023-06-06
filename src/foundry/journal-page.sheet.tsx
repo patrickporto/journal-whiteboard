@@ -1,5 +1,6 @@
-import { ReactElement } from 'react';
+import Raect, { ReactElement } from 'react';
 import * as ReactDOM from 'react-dom/client';
+import { DocumentSheetProvider } from './document-sheet.context';
 
 export abstract class JournalPageSheetReact extends JournalPageSheet {
     root: ReactDOM.Root | null = null;
@@ -35,7 +36,7 @@ export abstract class JournalPageSheetReact extends JournalPageSheet {
             return
         }
         this.root = ReactDOM.createRoot(this.form);
-        this.root.render(this.reactComponent({sheet}));
+        this.root.render(<DocumentSheetProvider sheet={sheet}>{this.reactComponent()}</DocumentSheetProvider>);
     }
 
     abstract componentDidMount(sheet): void;

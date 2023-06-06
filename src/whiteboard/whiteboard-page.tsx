@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import {
     App,
     Canvas,
@@ -15,6 +15,7 @@ import '@tldraw/tldraw/ui.css';
 import { getEditorAssetUrls, getUiAssetUrls } from '../tldraw/assets';
 import { menuOverrides } from '../tldraw/menu-overrides';
 import styled from 'styled-components';
+import { useDocumentSheet } from '../foundry/document-sheet.context';
 
 type WhiteBoardPageProps = {
     sheet: any;
@@ -29,15 +30,15 @@ const editorAssetUrls = getEditorAssetUrls();
 const uiAssetUrls = getUiAssetUrls();
 
 export const WhiteboardPage = ({
-    sheet,
     store,
     config,
     onMount,
     userId,
     instanceId,
 }: WhiteBoardPageProps) => {
-    const [documentName, setDocumentName] = React.useState(sheet?.data?.name);
+    const { sheet, update } = useDocumentSheet()
     const [showTitle, setShowTitle] = React.useState(sheet?.data?.title?.show);
+    console.log('sheet', sheet)
     return (
         <Whiteboard className={sheet.cssClass}>
             {sheet?.editable && (
@@ -45,10 +46,10 @@ export const WhiteboardPage = ({
                     <input
                         className="title"
                         type="text"
-                        value={documentName}
+                        defaultValue={sheet?.data?.name}
+                        key={sheet.id}
                         onChange={(e) => {
-                            sheet.document.update({ name: e.target.value }, { render: false });
-                            setDocumentName(e.target.value);
+                            update({ name: e.target.value });
                         }}
                         placeholder="Page Name"
                     />
@@ -99,7 +100,7 @@ export const WhiteboardPage = ({
             )}
             {(showTitle && !sheet?.editable) && (
                 <header className="journal-page-header">
-                    <h1>{documentName}</h1>
+                    <h1>{sheet?.data?.name}</h1>
                 </header>
             )}
             <TldrawEditor
