@@ -1,6 +1,7 @@
 declare class SocketModule {
-    register(name, func): void
-    executeForOthers(name, ...args): Promise<any>
+    register(name: name, func: (...args: any) => any): void
+    executeForOthers(name: string, ...args): Promise<any>
+    executeAsGM(name: string, ...parameters: any[]): Promise<any>;
 }
 
 declare class SocketLib {
