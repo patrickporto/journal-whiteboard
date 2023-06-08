@@ -27,7 +27,6 @@ export abstract class JournalPageSheetReact extends JournalPageSheet {
         if (this.form) {
             return;
         }
-        console.log('REACT | createForm');
         this.form = document.createElement('form');
         this.form.setAttribute('autocomplete', 'off');
     }
