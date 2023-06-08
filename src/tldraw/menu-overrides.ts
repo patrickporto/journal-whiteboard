@@ -1,6 +1,6 @@
 import { App } from '@tldraw/tldraw';
 import { MenuSchema, TldrawUiOverrides, ToolbarSchemaContextType } from '@tldraw/ui';
-import { debugService } from '../debug/debug.module';
+import { insertMediaFromFoundry } from './insert-media';
 
 export const menuOverrides: Partial<TldrawUiOverrides> = {
     contextMenu: (app: App, schema: MenuSchema, helpers) => {
@@ -14,6 +14,16 @@ export const menuOverrides: Partial<TldrawUiOverrides> = {
             schema.findIndex(item => item.id === 'embed'),
             1,
         );
+        const insertMediaIndex = schema.findIndex(item => item.id === 'asset')
+        schema[insertMediaIndex] = {
+            ...schema[insertMediaIndex],
+            toolItem: {
+                ...schema[insertMediaIndex].toolItem,
+                onSelect: async () => {
+                    await insertMediaFromFoundry(app)
+                }
+            }
+        }
         return schema;
     },
 };

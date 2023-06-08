@@ -57,3 +57,17 @@ declare const foundry = {
 declare const CONFIG = {
     JournalEntryPage: any
 }
+
+declare class FilePicker {
+    field: HTMLElement;
+    constructor(options: { type: string, field?: any, displayMode?: string, callback: (path: string) => void })
+    browse(): void;
+    render(): void;
+    _onSubmit(ev: Event)
+    close(): void;
+    callback(path: string, filePicker: FilePicker): void;
+}
+
+declare class ImageHelper {
+    static hasImageExtension(path: string): boolean;
+}
