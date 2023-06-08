@@ -144,8 +144,8 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
             {
                 id: shapeId,
                 type: shape.type,
-                x: originalEvent.clientX,
-                y: originalEvent.clientY,
+                x: this.tldrawApp.viewportPageBounds.center.x,
+                y: this.tldrawApp.viewportPageBounds.center.y,
                 props: {
                     id: data.uuid,
                     type: data.type,
