@@ -1,6 +1,6 @@
 {
     "name": "journal-whiteboard",
-    "version": "11.0.4",
+    "version": "11.0.5",
     "private": true,
     "type": "module",
     "scripts": {
