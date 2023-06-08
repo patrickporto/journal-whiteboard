@@ -51,6 +51,7 @@ export abstract class JournalPageSheetReact extends JournalPageSheet {
 
     private refreshWindowTitle() {
         let t = this.element.find(".window-title")[0];
+        if ( !t ) return;
         if ( t.hasChildNodes() ) t = t.childNodes[0];
         t.textContent = this.title;
     }
