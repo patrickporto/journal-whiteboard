@@ -17,10 +17,9 @@ export abstract class JournalPageSheetReact extends JournalPageSheet {
     }
 
     async _renderInner(sheet: any): Promise<JQuery<HTMLElement>> {
-        console.log('REACT | _renderInner')
         this.createForm();
         this.componentDidMount(sheet);
-        this.createReactRoot(sheet)
+        this.createReactRoot(sheet);
         return $(this.form);
     }
 
@@ -28,7 +27,7 @@ export abstract class JournalPageSheetReact extends JournalPageSheet {
         if (this.form) {
             return;
         }
-        console.log('REACT | createForm')
+        console.log('REACT | createForm');
         this.form = document.createElement('form');
         this.form.setAttribute('autocomplete', 'off');
     }
@@ -37,22 +36,24 @@ export abstract class JournalPageSheetReact extends JournalPageSheet {
         if (!this.root) {
             this.root = ReactDOM.createRoot(this.form);
         }
-        this.root.render(<DocumentSheetProvider sheet={sheet}>{this.reactComponent()}</DocumentSheetProvider>);
+        this.root.render(
+            <DocumentSheetProvider sheet={sheet}>{this.reactComponent()}</DocumentSheetProvider>,
+        );
     }
 
     async _render(force = false, options = {}) {
-      if (this._state === Application.RENDER_STATES.RENDERED) {
-        this.refreshWindowTitle();
-        return
-      }
+        if (!force && this._state === Application.RENDER_STATES.RENDERED) {
+            this.refreshWindowTitle();
+            return;
+        }
 
-       await super._render(force, options);
+        await super._render(force, options);
     }
 
     private refreshWindowTitle() {
-        let t = this.element.find(".window-title")[0];
-        if ( !t ) return;
-        if ( t.hasChildNodes() ) t = t.childNodes[0];
+        let t = this.element.find('.window-title')[0];
+        if (!t) return;
+        if (t.hasChildNodes()) t = t.childNodes[0];
         t.textContent = this.title;
     }
 
@@ -76,7 +77,6 @@ export abstract class JournalPageSheetReact extends JournalPageSheet {
         this.deactivateListeners(html);
 
         super.activateListeners(html);
-        console.log('REACT | activateListeners')
     }
     _activateEditor(_: JQuery | HTMLElement) {}
     async saveEditor(name: string, _: { remove?: boolean } = {}) {}
