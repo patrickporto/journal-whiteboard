@@ -33,6 +33,7 @@ https://github.com/patrickporto/journal-whiteboard/releases/latest/download/modu
 |:--- |:---:|:--- |
 | [GM Screen](https://foundryvtt.com/packages/gm-screen) | ✔️ | Works as expected |
 | [Monk's Enhanced Journal](https://foundryvtt.com/packages/monks-enhanced-journal) | - | Unknown |
+| [Journal Improvements](https://github.com/ClipplerBlood/journal-improvements) | ❌	 | Not compatible |
 
 ## License
 
