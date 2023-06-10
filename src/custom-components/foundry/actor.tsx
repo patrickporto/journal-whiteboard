@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { HTMLContainer, TLBaseShape, TLBoxTool, TLBoxUtil, TLOpacityType, defineShape } from "@tldraw/tldraw"
 import styled from 'styled-components'
 
-const DEFAULT_ACTOR_IMG = '/icons/svg/mystery-man.svg'
-
 export type ActorShape = TLBaseShape<
 	'actor',
 	{
@@ -44,7 +42,7 @@ export class ActorUtil extends TLBoxUtil<ActorShape> {
             img: string,
             name: string
         }>({
-            img: DEFAULT_ACTOR_IMG,
+            img: foundry.CONST.DEFAULT_TOKEN,
             name: 'Actor'
         })
         useEffect(() => {
