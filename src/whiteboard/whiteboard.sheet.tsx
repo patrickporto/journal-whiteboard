@@ -1,5 +1,5 @@
 import React from 'react';
-import { WhiteboardPage } from './whiteboard-page';
+import { WhiteboardPage } from './components/whiteboard-page';
 import './whiteboard.style.css';
 import {
     App,
@@ -22,6 +22,7 @@ import {
     getTools,
 } from '../custom-components/custom-components.service';
 import { collaborativeStore } from '../collaboration/collaboration.module';
+import { WhiteboardProvider } from './contexts/whiteboard.context';
 
 export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
     store: any;
@@ -106,13 +107,15 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
 
     reactComponent() {
         return (
-            <WhiteboardPage
-                store={this.store}
-                config={this.tldrawConfig}
-                onMount={this.handleMount}
-                userId={this.userId}
-                instanceId={this.instanceId}
-            />
+            <WhiteboardProvider onSave={this.saveSnapshot.bind(this)}>
+                <WhiteboardPage
+                    store={this.store}
+                    config={this.tldrawConfig}
+                    onMount={this.handleMount}
+                    userId={this.userId}
+                    instanceId={this.instanceId}
+                />
+            </WhiteboardProvider>
         );
     }
 

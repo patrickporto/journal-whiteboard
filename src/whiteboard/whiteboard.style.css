@@ -22,10 +22,10 @@
     display: none;
 }
 
-.journal-whiteboard\.whiteboard button:hover, button:focus {
+.journal-whiteboard\.whiteboard .rs-container button:hover, button:focus {
     box-shadow: none;
 }
 
-.journal-whiteboard\.whiteboard button {
+.journal-whiteboard\.whiteboard .rs-container button {
     width: unset;
 }
