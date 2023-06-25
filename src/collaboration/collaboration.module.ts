@@ -1,7 +1,4 @@
 import { debugService } from "../debug/debug.module";
-import { CollaborationService } from "./collaboration.service";
-
-let collaborationService: CollaborationService
 import { CANNONICAL_NAME } from "../constants";
 import { CollaborativeStore } from "./collaborative-store";
 
@@ -15,6 +12,7 @@ export default {
                 debugService.warn(
                     'Collaborative editing is disabled because SocketLib is not installed or not active.',
                 );
+                collaborativeStore = new CollaborativeStore();
             }
         },
         socketlib() {
