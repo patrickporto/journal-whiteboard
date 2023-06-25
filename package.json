@@ -14,7 +14,9 @@
         "format": "prettier --write \"src/**/*.{ts,js,json,css,md}\"",
         "format:check": "prettier --check \"src/**/*.{ts,js,json,css,md}\"",
         "lint": "eslint -c .eslintrc.cjs .",
-        "lint:fix": "eslint -c .eslintrc.cjs --fix ."
+        "lint:fix": "eslint -c .eslintrc.cjs --fix .",
+        "fvtt:link": "ln -s $PWD/dist `fvtt configure get dataPath`/Data/modules/`node -p \"require('./package.json').name\"`",
+        "fvtt:launch": "fvtt launch"
     },
     "devDependencies": {
         "@foundryvtt/foundryvtt-cli": "^0.0.6",
