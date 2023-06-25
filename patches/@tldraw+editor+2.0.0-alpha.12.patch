@@ -1,3 +1,18 @@
+diff --git a/node_modules/@tldraw/editor/dist-esm/lib/utils/assets.mjs b/node_modules/@tldraw/editor/dist-esm/lib/utils/assets.mjs
+index 096876f..c5ac9c6 100644
+--- a/node_modules/@tldraw/editor/dist-esm/lib/utils/assets.mjs
++++ b/node_modules/@tldraw/editor/dist-esm/lib/utils/assets.mjs
+@@ -8,8 +8,8 @@ import uniq from "lodash.uniq";
+ import { MAX_ASSET_HEIGHT, MAX_ASSET_WIDTH } from "../constants.mjs";
+ import { getSvgAsDataUrlSync } from "./export.mjs";
+ import { isAnimated } from "./is-gif-animated.mjs";
+-const ACCEPTED_IMG_TYPE = ["image/jpeg", "image/png", "image/gif", "image/svg+xml"];
+-const ACCEPTED_VID_TYPE = ["video/mp4", "video/quicktime"];
++const ACCEPTED_IMG_TYPE = ["image/jpeg", "image/png", "image/gif", "image/svg+xml", 'image/webp'];
++const ACCEPTED_VID_TYPE = ["video/mp4", "video/quicktime", 'video/webm'];
+ const ACCEPTED_ASSET_TYPE = ACCEPTED_IMG_TYPE.concat(ACCEPTED_VID_TYPE).join(", ");
+ const isImage = (ext) => ACCEPTED_IMG_TYPE.includes(ext);
+ async function getVideoSizeFromSrc(src) {
 diff --git a/node_modules/@tldraw/editor/src/lib/utils/assets.ts b/node_modules/@tldraw/editor/src/lib/utils/assets.ts
 index bbffeac..b5e269a 100644
 --- a/node_modules/@tldraw/editor/src/lib/utils/assets.ts
