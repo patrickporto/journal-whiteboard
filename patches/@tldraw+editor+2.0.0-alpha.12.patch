@@ -1,0 +1,16 @@
+diff --git a/node_modules/@tldraw/editor/src/lib/utils/assets.ts b/node_modules/@tldraw/editor/src/lib/utils/assets.ts
+index bbffeac..b5e269a 100644
+--- a/node_modules/@tldraw/editor/src/lib/utils/assets.ts
++++ b/node_modules/@tldraw/editor/src/lib/utils/assets.ts
+@@ -19,9 +19,9 @@ import { getSvgAsDataUrlSync } from './export'
+ import { isAnimated } from './is-gif-animated'
+ 
+ /** @public */
+-export const ACCEPTED_IMG_TYPE = ['image/jpeg', 'image/png', 'image/gif', 'image/svg+xml']
++export const ACCEPTED_IMG_TYPE = ['image/jpeg', 'image/png', 'image/gif', 'image/svg+xml', 'image/webp']
+ /** @public */
+-export const ACCEPTED_VID_TYPE = ['video/mp4', 'video/quicktime']
++export const ACCEPTED_VID_TYPE = ['video/mp4', 'video/quicktime', 'video/webm']
+ /** @public */
+ export const ACCEPTED_ASSET_TYPE = ACCEPTED_IMG_TYPE.concat(ACCEPTED_VID_TYPE).join(', ')
+ 
