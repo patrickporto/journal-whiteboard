@@ -63,7 +63,7 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
         this.page = TLPage.create({ id: this.pageId, name: sheet.title, index: 'a0' })
         this.store = this.tldrawConfig.createStore({
             initialData: {
-                [this.pageId]: this.page
+                [this.pageId]: this.page,
             },
             userId: this.userId,
             instanceId: this.instanceId,
@@ -88,6 +88,7 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
         if (!this.isEditable) {
             this.tldrawApp.enableReadOnlyMode();
         }
+        app.updateUser(this.user)
         app.updateUserPresence({color: game.user.color})
         await this.enableCollaborativeEditing(app);
     };
