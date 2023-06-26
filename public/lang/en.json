@@ -6,5 +6,13 @@
     "JW.ThemeHint": "Select a theme between light and dark",
     "JW.ThemeLight": "Light",
     "JW.ThemeDark": "Dark",
-    "JW.OpenSheet": "Open sheet"
+    "JW.OpenSheet": "Open sheet",
+    "JW.AlignLeft": "Align left",
+    "JW.AlignHorizontally": "Align horizontally",
+    "JW.AlignRight": "Align right",
+    "JW.AlignTop": "Align top",
+    "JW.AlignVertically": "Align vertically",
+    "JW.AlignBottom": "Align bottom",
+    "JW.DistributeHorizontally": "Distribute horizontally",
+    "JW.DistributeVertically": "Distribute vertically"
 }
