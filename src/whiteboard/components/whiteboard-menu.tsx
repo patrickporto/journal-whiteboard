@@ -1,17 +1,49 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { useWhiteboard } from '../contexts/whiteboard.context';
+import { Box2d } from '@tldraw/primitives'
+import { compact } from '@tldraw/utils'
 
 export const WhiteboardMenu = () => {
     const { app, save } = useWhiteboard();
     const handleSave = useCallback(() => {
-        save()
+        save();
+    }, [app]);
+
+    const handleDuplicate = useCallback(() => {
+        if (!app || app.currentToolId !== 'select') return;
+        const ids = app.selectedIds;
+        const commonBounds = Box2d.Common(compact(ids.map(id => app.getPageBoundsById(id))));
+        const offset = app.canMoveCamera
+            ? {
+                  x: commonBounds.width + 10,
+                  y: 0,
+              }
+            : {
+                  x: 16 / app.zoomLevel,
+                  y: 16 / app.zoomLevel,
+              };
+        app.mark('duplicate shapes');
+        app.duplicateShapes(ids, offset);
     }, [app]);
 
     return (
         <Menu>
             <li>
-                <MenuButton type="button" data-tooltip="Save Changes" onClick={handleSave}>
+                <MenuButton
+                    type="button"
+                    data-tooltip={game.i18n.localize('Duplicate')}
+                    onClick={handleDuplicate}
+                >
+                    <i className="fa-solid fa-clone"></i>
+                </MenuButton>
+            </li>
+            <li>
+                <MenuButton
+                    type="button"
+                    data-tooltip={game.i18n.localize('Save Changes')}
+                    onClick={handleSave}
+                >
                     <i className="fa-solid fa-save"></i>
                 </MenuButton>
             </li>
