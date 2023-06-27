@@ -64,6 +64,7 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
         this.store = this.tldrawConfig.createStore({
             initialData: {
                 [this.pageId]: this.page,
+                [this.userId]: this.user,
             },
             userId: this.userId,
             instanceId: this.instanceId,
@@ -88,9 +89,9 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
         if (!this.isEditable) {
             this.tldrawApp.enableReadOnlyMode();
         }
+        await this.enableCollaborativeEditing(app);
         app.updateUser(this.user)
         app.updateUserPresence({color: game.user.color})
-        await this.enableCollaborativeEditing(app);
     };
 
     async enableCollaborativeEditing(app: App) {
@@ -101,6 +102,7 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
         debugService.log('Collaborative editing is enabled.');
         await collaborativeStore.restoreFromRemote(this.instanceId)
         debugService.log('Listening for remote changes.');
+        collaborativeStore.connectUser(this.instanceId)
         this.removeStoreListener = app.store.listen(entry => {
             collaborativeStore.put(this.instanceId, entry.changes, entry.source)
         });
@@ -108,7 +110,7 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
 
     reactComponent() {
         return (
-            <WhiteboardProvider onSave={this.saveSnapshot.bind(this)}>
+            <WhiteboardProvider instanceId={this.instanceId} onSave={this.saveSnapshot.bind(this)}>
                 <WhiteboardPage
                     store={this.store}
                     config={this.tldrawConfig}
@@ -133,6 +135,9 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
             await this.saveSnapshot();
         }
         this?.removeStoreListener();
+        if (collaborativeStore) {
+            collaborativeStore.disconnectUser(this.instanceId, this.userId)
+        }
         return await super.close();
     }
 

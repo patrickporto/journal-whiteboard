@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components';
 import { useWhiteboard } from '../contexts/whiteboard.context';
 import { Box2d } from '@tldraw/primitives';
 import { compact } from '@tldraw/utils';
+import { ConcurrentUsers } from './concurrent-users';
 
 export const WhiteboardMenu = () => {
     const { app, save } = useWhiteboard();
@@ -178,6 +179,7 @@ export const WhiteboardMenu = () => {
                     <i className="fa-solid fa-save"></i>
                 </MenuButton>
             </li>
+            <ConcurrentUsers />
         </Menu>
     );
 };
