@@ -37,6 +37,7 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
     pageId: TLPageId
     page: TLPage
     removeStoreListener: any;
+    autoSaveInterval: any
 
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
@@ -90,6 +91,7 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
             this.tldrawApp.enableReadOnlyMode();
         }
         await this.enableCollaborativeEditing(app);
+        this.enableAutoSave()
         app.updateUser(this.user)
         app.updateUserPresence({color: game.user.color})
     };
@@ -122,12 +124,22 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
         );
     }
 
+    async enableAutoSave() {
+        const frequency = game.settings.get('core', 'editorAutosaveSecs')
+        debugService.log("Autosave is enabled")
+        this.autoSaveInterval = setInterval(async () => {
+            debugService.log("Autosaving...")
+            await this.saveSnapshot()
+        }, frequency * 1000)
+    }
+
     async saveSnapshot() {
         const snapshot = collaborativeStore.getSnapshot(this.instanceId);
         await this.object.update(
             { ['system.whiteboard']: snapshot },
             { diff: false, recursive: true },
         );
+        debugService.log("Saved")
     }
 
     async close() {
