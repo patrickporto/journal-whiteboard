@@ -1,11 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useWhiteboard } from '../contexts/whiteboard.context';
-import { debugService } from '../../debug/debug.module';
 
 export const ConcurrentUsers = () => {
     const { concurrentUsers } = useWhiteboard();
-    debugService.log("<ConcurrentUsers />", concurrentUsers)
     if (concurrentUsers.length < 2) {
         return null
     }

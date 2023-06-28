@@ -31,11 +31,7 @@ export const WhiteboardProvider = ({ instanceId, onSave, children }): ReactEleme
         listenerRef.current = collaborativeStore.listen(instanceId, () => {
             const nextConcurrentUsers = collaborativeStore.getConcurrentUsers(instanceId)
             if (!foundry.utils.objectsEqual(concurrentUsers.map(u => u.id), nextConcurrentUsers.map(u => u.id))) {
-                console.log("app.store.listen", concurrentUsers.map(u => u.id), nextConcurrentUsers.map(u => u.id))
                 setConcurrentUsers(nextConcurrentUsers)
-            } else {
-                console.log("!!!!app.store.listen", concurrentUsers.map(u => u.id), nextConcurrentUsers.map(u => u.id))
-
             }
         })
         return () => {
