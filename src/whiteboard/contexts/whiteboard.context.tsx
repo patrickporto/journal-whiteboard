@@ -38,7 +38,6 @@ export const WhiteboardProvider = ({ instanceId, onSave, children }): ReactEleme
             listenerRef.current()
         }
     }, [app?.store, concurrentUsers, setConcurrentUsers])
-    console.log("WhiteboardProvider", concurrentUsers)
     return (
         <WhiteboardContext.Provider value={{ app, setApp, save: onSave, concurrentUsers }}>{children}</WhiteboardContext.Provider>
     );
