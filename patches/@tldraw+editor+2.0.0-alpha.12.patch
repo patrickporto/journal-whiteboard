@@ -1,3 +1,48 @@
+diff --git a/node_modules/@tldraw/editor/dist-esm/lib/hooks/useDocumentEvents.mjs b/node_modules/@tldraw/editor/dist-esm/lib/hooks/useDocumentEvents.mjs
+index a9030ba..0b726f2 100644
+--- a/node_modules/@tldraw/editor/dist-esm/lib/hooks/useDocumentEvents.mjs
++++ b/node_modules/@tldraw/editor/dist-esm/lib/hooks/useDocumentEvents.mjs
+@@ -168,24 +168,24 @@ function useDocumentEvents() {
+       app.updateViewportScreenBounds();
+     }
+     container.addEventListener("touchstart", handleTouchStart, { passive: false });
+-    document.addEventListener("wheel", handleWheel, { passive: false });
+-    document.addEventListener("gesturestart", preventDefault);
+-    document.addEventListener("gesturechange", preventDefault);
+-    document.addEventListener("gestureend", preventDefault);
+-    document.addEventListener("keydown", handleKeyDown);
+-    document.addEventListener("keyup", handleKeyUp);
+-    window.addEventListener("blur", handleBlur);
+-    window.addEventListener("focus", handleFocus);
++    container.addEventListener("wheel", handleWheel, { passive: false });
++    container.addEventListener("gesturestart", preventDefault);
++    container.addEventListener("gesturechange", preventDefault);
++    container.addEventListener("gestureend", preventDefault);
++    container.addEventListener("keydown", handleKeyDown);
++    container.addEventListener("keyup", handleKeyUp);
++    container.addEventListener("blur", handleBlur);
++    container.addEventListener("focus", handleFocus);
+     return () => {
+       container.removeEventListener("touchstart", handleTouchStart);
+-      document.removeEventListener("wheel", handleWheel);
+-      document.removeEventListener("gesturestart", preventDefault);
+-      document.removeEventListener("gesturechange", preventDefault);
+-      document.removeEventListener("gestureend", preventDefault);
+-      document.removeEventListener("keydown", handleKeyDown);
+-      document.removeEventListener("keyup", handleKeyUp);
+-      window.removeEventListener("blur", handleBlur);
+-      window.removeEventListener("focus", handleBlur);
++      container.removeEventListener("wheel", handleWheel);
++      container.removeEventListener("gesturestart", preventDefault);
++      container.removeEventListener("gesturechange", preventDefault);
++      container.removeEventListener("gestureend", preventDefault);
++      container.removeEventListener("keydown", handleKeyDown);
++      container.removeEventListener("keyup", handleKeyUp);
++      container.removeEventListener("blur", handleBlur);
++      container.removeEventListener("focus", handleBlur);
+     };
+   }, [app, container]);
+ }
 diff --git a/node_modules/@tldraw/editor/dist-esm/lib/utils/assets.mjs b/node_modules/@tldraw/editor/dist-esm/lib/utils/assets.mjs
 index 096876f..c5ac9c6 100644
 --- a/node_modules/@tldraw/editor/dist-esm/lib/utils/assets.mjs
