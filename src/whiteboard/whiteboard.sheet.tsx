@@ -89,6 +89,7 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
         }
         if (!this.isEditable) {
             this.tldrawApp.enableReadOnlyMode();
+            return
         }
         await this.enableCollaborativeEditing(app);
         this.enableAutoSave()
@@ -97,7 +98,7 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
     };
 
     async enableCollaborativeEditing(app: App) {
-        if (!collaborativeStore || !this.rendered || !this.isEditable) {
+        if (!collaborativeStore || !this.rendered) {
             return
         }
 
