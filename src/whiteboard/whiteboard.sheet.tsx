@@ -97,7 +97,7 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
     };
 
     async enableCollaborativeEditing(app: App) {
-        if (!collaborativeStore || !this.rendered) {
+        if (!collaborativeStore || !this.rendered || !this.isEditable) {
             return
         }
 
@@ -125,6 +125,10 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
     }
 
     async enableAutoSave() {
+        if (!this.rendered || !this.isEditable) {
+            return
+        }
+
         const frequency = game.settings.get('core', 'editorAutosaveSecs')
         debugService.log("Autosave is enabled")
         this.autoSaveInterval = setInterval(async () => {
