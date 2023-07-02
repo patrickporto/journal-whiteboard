@@ -5,6 +5,7 @@ import { insertMediaFromFoundry } from './insert-media';
 export const menuOverrides: Partial<TldrawUiOverrides> = {
     contextMenu: (app: App, schema: MenuSchema, helpers) => {
         unregisterConversionsFromContextMenu(schema);
+        unregisterMoveToPageFromContextMenu(schema);
         registerWhiteboardContextMenu(app, schema, helpers);
         registerFoundryDocumentContextMenu(app, schema, helpers);
         return schema;
@@ -27,6 +28,13 @@ export const menuOverrides: Partial<TldrawUiOverrides> = {
         return schema;
     },
 };
+
+function unregisterMoveToPageFromContextMenu(schema: MenuSchema) {
+    schema.splice(
+        schema.findIndex(item => item.id === 'move-to-page'),
+        1,
+    );
+}
 
 function unregisterConversionsFromContextMenu(schema: MenuSchema) {
     schema.splice(
