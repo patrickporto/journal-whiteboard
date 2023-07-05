@@ -1,5 +1,5 @@
 import { App } from '@tldraw/tldraw';
-import { MenuSchema, TldrawUiOverrides, ToolbarSchemaContextType } from '@tldraw/ui';
+import { MenuGroup, MenuSchema, TldrawUiOverrides, ToolbarSchemaContextType } from '@tldraw/ui';
 import { insertMediaFromFoundry } from './insert-media';
 
 export const menuOverrides: Partial<TldrawUiOverrides> = {
@@ -30,8 +30,12 @@ export const menuOverrides: Partial<TldrawUiOverrides> = {
 };
 
 function unregisterMoveToPageFromContextMenu(schema: MenuSchema) {
-    schema.splice(
-        schema.findIndex(item => item.id === 'move-to-page'),
+    const modifyGroup = schema.find(item => item.id === 'modify') as (MenuGroup | null)
+    if (!modifyGroup) {
+        return
+    }
+    modifyGroup.children.splice(
+        modifyGroup.children.findIndex(item => item.id === 'MOVE_TO_PAGE_MENU'),
         1,
     );
 }
