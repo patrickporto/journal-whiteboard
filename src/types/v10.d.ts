@@ -6,7 +6,7 @@ declare class Application {
     element: jQuery;
     title: string;
     static get defaultOptions(): any;
-    async _renderInner(...args: any): Promise<JQuery>;
+    async _renderInner(...args: any): Promise<JQuery<HTMLElement>>;
     async _render(force = false, options = {})
     async _renderOuter(): Promise<JQuery>;
     async close(...args: any): Promise<any>;
