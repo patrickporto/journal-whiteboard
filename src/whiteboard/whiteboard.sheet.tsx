@@ -98,7 +98,7 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
     };
 
     async enableCollaborativeEditing(app: App) {
-        if (!collaborativeStore || !this.rendered) {
+        if (!collaborativeStore.isCollaborativeMode() || !this.rendered) {
             return
         }
 

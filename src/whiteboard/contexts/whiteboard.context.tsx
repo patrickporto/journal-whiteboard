@@ -27,7 +27,9 @@ export const WhiteboardProvider = ({ instanceId, onSave, children }): ReactEleme
     const listenerRef = useRef<any>()
     const [concurrentUsers, setConcurrentUsers] = useState<ConcurrentUser[]>([])
     useEffect(() => {
-        if (!app) return
+        if (!app || !collaborativeStore.isCollaborativeMode()){
+            return
+        }
         listenerRef.current = collaborativeStore.listen(instanceId, () => {
             const nextConcurrentUsers = collaborativeStore.getConcurrentUsers(instanceId)
             if (!foundry.utils.objectsEqual(concurrentUsers.map(u => u.id), nextConcurrentUsers.map(u => u.id))) {
@@ -37,7 +39,7 @@ export const WhiteboardProvider = ({ instanceId, onSave, children }): ReactEleme
         return () => {
             listenerRef.current()
         }
-    }, [app?.store, concurrentUsers, setConcurrentUsers])
+    }, [app?.store, concurrentUsers, setConcurrentUsers, collaborativeStore.isCollaborativeMode()])
     return (
         <WhiteboardContext.Provider value={{ app, setApp, save: onSave, concurrentUsers }}>{children}</WhiteboardContext.Provider>
     );

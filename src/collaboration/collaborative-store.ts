@@ -215,4 +215,8 @@ export class CollaborativeStore {
         }
         return Object.values(users)
     }
+
+    isCollaborativeMode() {
+        return game.modules.get('socketlib')?.active
+    }
 }
