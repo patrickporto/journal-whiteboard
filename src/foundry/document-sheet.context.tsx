@@ -111,7 +111,7 @@ export const DocumentSheetProvider = ({sheet, form, children}): ReactElement => 
         return await sheet.document.update(data, context)
     }, DEBOUNCE_TIME), [sheet?.document])
     const useDropEffect = (callback, deps) => useEffect(() => {
-        if (!sheet.isEditable) {
+        if (!sheet.editable) {
             return
         }
         $(form).on("drop", ({originalEvent}) => {
@@ -126,7 +126,7 @@ export const DocumentSheetProvider = ({sheet, form, children}): ReactElement => 
         return () => {
             $(form).off("drop")
         }
-    }, [form, ...deps])
+    }, [form, sheet.editable, ...deps])
     return <DocumentSheetContext.Provider value={{sheet, update, useDropEffect}}>
         {children}
     </DocumentSheetContext.Provider>
