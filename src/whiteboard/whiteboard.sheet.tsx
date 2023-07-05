@@ -69,9 +69,6 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
             userId: this.userId,
             instanceId: this.instanceId,
         })
-        if (this.isEditable) {
-            $(this.form).on('drop', this._onDrop.bind(this));
-        }
         collaborativeStore.registerStore(this.instanceId, this.store)
         const whiteboard = this.object.system?.whiteboard;
         if (whiteboard) {
