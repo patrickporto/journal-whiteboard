@@ -17,7 +17,6 @@ import { debugService } from '../debug/debug.module';
 import { tldrawSettings } from '../tldraw/tldraw.module';
 import { JournalPageSheetReact } from '../foundry/journal-page.sheet';
 import {
-    getShapeByDataTransferType,
     getShapes,
     getTools,
 } from '../custom-components/custom-components.service';
@@ -156,29 +155,5 @@ export class JournalWhiteboardPageSheet extends JournalPageSheetReact {
             collaborativeStore.disconnectUser(this.instanceId, this.userId)
         }
         return await super.close();
-    }
-
-    async _onDrop({ originalEvent }: any) {
-        const data = JSON.parse(originalEvent.dataTransfer?.getData('text/plain') ?? '');
-        const shape = getShapeByDataTransferType(data?.type);
-        debugService.log('Dropping Foundry Document', data, shape);
-        if (!shape) {
-            return;
-        }
-        const shapeId = this.tldrawApp.createShapeId();
-        this.tldrawApp.createShapes([
-            {
-                id: shapeId,
-                type: shape.type,
-                x: this.tldrawApp.viewportPageBounds.center.x,
-                y: this.tldrawApp.viewportPageBounds.center.y,
-                props: {
-                    id: data.uuid,
-                    type: data.type,
-                },
-            },
-        ]);
-        this.tldrawApp.setSelectedIds([shapeId]);
-        this.tldrawApp.setSelectedTool('select.idle');
     }
 }

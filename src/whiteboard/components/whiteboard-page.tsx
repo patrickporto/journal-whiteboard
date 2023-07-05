@@ -18,6 +18,8 @@ import styled from 'styled-components';
 import { useDocumentSheet } from '../../foundry/document-sheet.context';
 import { WhiteboardMenu } from './whiteboard-menu';
 import { useWhiteboard } from '../contexts/whiteboard.context';
+import { debugService } from '../../debug/debug.module';
+import { getShapeByDataTransferType } from '../../custom-components/custom-components.service';
 
 type WhiteBoardPageProps = {
     store: TLStore;
@@ -37,13 +39,38 @@ export const WhiteboardPage = ({
     userId,
     instanceId,
 }: WhiteBoardPageProps) => {
-    const { sheet, update } = useDocumentSheet();
+    const { sheet, update, useDropEffect } = useDocumentSheet();
     const [showTitle, setShowTitle] = React.useState(sheet?.data?.title?.show);
-    const {setApp} = useWhiteboard()
+    const {app, setApp} = useWhiteboard()
     const handleMount = useCallback((app: App) => {
         setApp(app)
         onMount(app)
     }, [onMount])
+    useDropEffect(data => {
+        if (!app) {
+            return
+        }
+        const shape = getShapeByDataTransferType(data?.type);
+        debugService.log('Dropping Foundry Document', data, shape);
+        if (!shape) {
+            return;
+        }
+        const shapeId = app.createShapeId();
+        app.createShapes([
+            {
+                id: shapeId,
+                type: shape.type,
+                x: app.viewportPageBounds.center.x,
+                y: app.viewportPageBounds.center.y,
+                props: {
+                    id: data.uuid,
+                    type: data.type,
+                },
+            },
+        ]);
+        app.setSelectedIds([shapeId]);
+        app.setSelectedTool('select.idle');
+    }, [app])
     return (
         <Whiteboard className={sheet.cssClass}>
             {sheet?.editable && (

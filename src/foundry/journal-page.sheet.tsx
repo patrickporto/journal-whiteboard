@@ -36,7 +36,7 @@ export abstract class JournalPageSheetReact extends JournalPageSheet {
             this.root = ReactDOM.createRoot(this.form);
         }
         this.root.render(
-            <DocumentSheetProvider sheet={sheet}>{this.reactComponent()}</DocumentSheetProvider>,
+            <DocumentSheetProvider sheet={sheet} form={$(this.form)}>{this.reactComponent()}</DocumentSheetProvider>,
         );
     }
 

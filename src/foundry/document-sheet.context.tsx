@@ -1,5 +1,6 @@
 import { debounce } from '@tldraw/utils';
-import React, { ReactElement, createContext, useCallback, useContext } from 'react';
+import React, { ReactElement, createContext, useCallback, useContext, useEffect, useReducer } from 'react';
+import { debugService } from '../debug/debug.module';
 
 export interface DocumentSheetOptions {
     baseApplication: any
@@ -48,6 +49,7 @@ type DocumentSheet = {
 export type DocumentSheetState = {
     sheet: DocumentSheet
     update: (data?: any, context?: any) => Promise<any>
+    useDropEffect: (data: any, deps: any[]) => void
 }
 
 const defaultDocumentSheetState = {
@@ -90,7 +92,12 @@ const defaultDocumentSheetState = {
         headingLevels: {},
         id: ''
     },
-    update: async () => {}
+    update: async () => {
+        throw new Error("Not Implemented")
+    },
+    useDrop() {
+        throw new Error("Not Implemented")
+    }
 }
 
 const DocumentSheetContext = createContext<DocumentSheetState>(defaultDocumentSheetState)
@@ -99,11 +106,25 @@ export const useDocumentSheet = () => useContext(DocumentSheetContext)
 
 const DEBOUNCE_TIME = 1000
 
-export const DocumentSheetProvider = ({sheet, children}): ReactElement => {
+export const DocumentSheetProvider = ({sheet, form, children}): ReactElement => {
     const update = useCallback(debounce(async (data?: any, context?: any) => {
         return await sheet.document.update(data, context)
     }, DEBOUNCE_TIME), [sheet?.document])
-    return <DocumentSheetContext.Provider value={{sheet, update}}>
+    const useDropEffect = (callback, deps) => useEffect(() => {
+        $(form).on("drop", ({originalEvent}) => {
+            let data
+            try {
+                data = JSON.parse(originalEvent?.dataTransfer?.getData('text/plain') ?? '');
+                callback(data)
+            } catch(e) {
+                debugService.error("Not allowed: ", originalEvent?.dataTransfer?.getData('text/plain') ?? originalEvent)
+            }
+        })
+        return () => {
+            $(form).off("drop")
+        }
+    }, [form, ...deps])
+    return <DocumentSheetContext.Provider value={{sheet, update, useDropEffect}}>
         {children}
     </DocumentSheetContext.Provider>
 };
