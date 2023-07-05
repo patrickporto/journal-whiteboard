@@ -95,7 +95,7 @@ const defaultDocumentSheetState = {
     update: async () => {
         throw new Error("Not Implemented")
     },
-    useDrop() {
+    useDropEffect() {
         throw new Error("Not Implemented")
     }
 }
