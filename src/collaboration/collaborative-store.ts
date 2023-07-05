@@ -53,7 +53,6 @@ export class CollaborativeStore {
 
     disconnectUser(instanceId: TLInstanceId, userId: TLUserId) {
         debugService.log("disconnectUser", instanceId)
-        this.stores.delete(instanceId)
         this.socket.executeForOthers('disconnectUser', instanceId, userId);
     }
 
