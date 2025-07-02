@@ -17,14 +17,12 @@ jobs:
             discussions: write
 
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@v4
 
-            - name: Use Node.js 16.x
-              uses: actions/setup-node@v2
+            - name: Use Node.js 18.x
+              uses: actions/setup-node@v4
               with:
-                  node-version: 16.x
-                  cache: "npm"
-                  cache-dependency-path: package-lock.json
+                  node-version: 18.x
 
             - name: Install dependencies
               run: npm ci
@@ -52,10 +50,28 @@ jobs:
                   git commit -am "chore(release): ${{ github.event.release.tag_name }}"
                   git push origin HEAD:main
 
-            - name: Upload to FoundryVTT
-              run: npx @ghost-fvtt/foundry-publish
+            - name: Publish to FoundryVTT Package Release API
               env:
-                  FVTT_USERNAME: ${{ secrets.FOUNDRY_ADMIN_USERNAME }}
-                  FVTT_PASSWORD: ${{ secrets.FOUNDRY_ADMIN_PASSWORD }}
-                  FVTT_PACKAGE_ID: ${{ secrets.FOUNDRY_ADMIN_MODULE_ID }}
-                  FVTT_MANIFEST_PATH: ${{ env.MANIFEST_FILE_PATH }}
+                FOUNDRY_API_KEY: ${{ secrets.FOUNDRY_API_KEY }}
+                PKG_NAME: ${{ env.PKG_NAME }}
+                RELEASE_NAME: ${{ env.RELEASE_NAME }}
+              run: |
+                MANIFEST_URL="https://github.com/${{ github.repository }}/releases/download/${{ env.RELEASE_NAME }}/module.json"
+                NOTES_URL="https://github.com/${{ github.repository }}/releases/tag/${{ env.RELEASE_NAME }}"
+                # Ajuste os valores de compatibility conforme necessário
+                curl -X POST "https://api.foundryvtt.com/_api/packages/release_version/" \
+                  -H "Content-Type: application/json" \
+                  -H "Authorization: $FOUNDRY_API_KEY" \
+                  -d '{
+                    "id": "'"$PKG_NAME"'",
+                    "release": {
+                      "version": "'"${RELEASE_NAME#v}"'",
+                      "manifest": "'"$MANIFEST_URL"'",
+                      "notes": "'"$NOTES_URL"'",
+                      "compatibility": {
+                        "minimum": "10.312",
+                        "verified": "11",
+                        "maximum": ""
+                      }
+                    }
+                  }'
